@@ -20,7 +20,7 @@ gem 'simple_token_authentication', '~> 1.0'
 gem 'rack-cors', '~> 0.4.0'
 
 group :production do
-  gem 'unicorn'
+  gem 'puma'
 end
 
 
