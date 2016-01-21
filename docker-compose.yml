@@ -1,0 +1,33 @@
+web: &appbase
+  env_file: .env
+  working_dir: /app/user
+  links:
+    - mysql:db
+  volumes:
+    - .:/app/user
+  volumes_from:
+    - bundle
+
+web:
+  <<: *appbase
+  build: .
+  command: 'bundle exec puma -C ./config/puma.rb'
+  ports:
+    - 3000:3000
+
+worker:
+  <<: *appbase
+  image: surbtcbots_web
+  command: 'bundle exec rake jobs:work'
+
+mysql:
+  image: mysql
+  environment:
+    MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+
+# Container to share bundle data
+bundle:
+  image: surbtcbots_web
+  command: echo bundle data container
+  volumes:
+    - /app/heroku/ruby/bundle

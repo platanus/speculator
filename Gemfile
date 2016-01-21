@@ -18,10 +18,8 @@ gem 'responders'
 gem 'active_model_serializers', '~> 0.9.3'
 gem 'simple_token_authentication', '~> 1.0'
 gem 'rack-cors', '~> 0.4.0'
-
-group :production do
-  gem 'puma'
-end
+gem 'delayed_job_active_record'
+gem 'puma'
 
 
 group :development, :test do
@@ -33,6 +31,9 @@ group :development, :test do
   gem 'rspec-nc', require: false
 end
 
+group :production do
+  gem "rack-timeout"
+end
 
 group :test do
   gem 'shoulda-matchers', require: false

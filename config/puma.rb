@@ -1,4 +1,4 @@
-# http://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server
+# https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server
 
 # The environment variable WEB_CONCURRENCY may be set to a default value based
 # on dyno size. To manually configure this value use heroku config:set
@@ -19,7 +19,8 @@ threads(threads_count, threads_count)
 preload_app!
 
 rackup DefaultRackup
-environment ENV.fetch("RACK_ENV", "development")
+port ENV.fetch('PORT', 3000)
+environment ENV.fetch("RAILS_ENV", "development")
 
 on_worker_boot do
   # Worker specific setup for Rails 4.1+

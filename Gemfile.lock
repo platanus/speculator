@@ -56,6 +56,11 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.0)
+    delayed_job (4.1.1)
+      activesupport (>= 3.0, < 5.0)
+    delayed_job_active_record (4.1.0)
+      activerecord (>= 3.0, < 5)
+      delayed_job (>= 3.0, < 5)
     devise (3.5.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -134,6 +139,7 @@ GEM
     rack-cors (0.4.0)
     rack-test (0.6.3)
       rack (>= 1.0)
+    rack-timeout (0.3.2)
     rails (4.2.5)
       actionmailer (= 4.2.5)
       actionpack (= 4.2.5)
@@ -253,6 +259,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.9.3)
   aws-sdk (< 2)
   coffee-rails (~> 4.1.0)
+  delayed_job_active_record
   factory_girl_rails
   guard-rspec
   jbuilder (~> 2.0)
@@ -262,6 +269,7 @@ DEPENDENCIES
   pry-rails
   puma
   rack-cors (~> 0.4.0)
+  rack-timeout
   rails (= 4.2.5)
   rails-i18n
   responders
@@ -278,4 +286,4 @@ DEPENDENCIES
   versionist
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
