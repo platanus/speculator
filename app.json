@@ -1,5 +1,19 @@
 {
   "name": "Surbtc Bots",
   "description": "Bots for surbtc",
-  "image": "heroku/ruby"
+  "image": "heroku/ruby",
+  "env":{
+    "RAILS_ENV":{
+      "required":true
+    },
+    "SECRET_KEY_BASE":{
+      "generator":"secret"
+    },
+    "DATABASE_URL":{
+      "required":true
+    },
+    "WEB_CONCURRENCY":{
+      "required":true
+    }
+  }
 }
