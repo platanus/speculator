@@ -32,6 +32,7 @@ group :development, :test do
 end
 
 group :production do
+  gem "rails_stdout_logging"
   gem "rack-timeout"
 end
 
