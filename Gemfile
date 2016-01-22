@@ -29,7 +29,7 @@ group :development, :test do
   gem 'rspec-nc', require: false
 end
 
-group :production do
+group :staging, :production do
   gem "rails_stdout_logging"
   gem "rack-timeout"
 end
