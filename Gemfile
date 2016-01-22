@@ -9,7 +9,6 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0'
 gem 'spring'
-gem 'unicorn-rails'
 gem 'mysql2', '~> 0.3.18'
 gem 'aws-sdk', '< 2'
 gem 'rails-i18n'
@@ -20,7 +19,6 @@ gem 'simple_token_authentication', '~> 1.0'
 gem 'rack-cors', '~> 0.4.0'
 gem 'delayed_job_active_record'
 gem 'puma'
-
 
 group :development, :test do
   gem 'pry-rails'
