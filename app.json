@@ -6,13 +6,13 @@
     "RAILS_ENV":{
       "required":true
     },
+    "RACK_ENV":{
+      "required":true
+    },
     "SECRET_KEY_BASE":{
       "generator":"secret"
     },
     "DATABASE_URL":{
-      "required":true
-    },
-    "WEB_CONCURRENCY":{
       "required":true
     }
   }
