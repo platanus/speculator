@@ -97,6 +97,8 @@ GEM
     dotenv-rails (2.1.0)
       dotenv (= 2.1.0)
       railties (>= 4.0, < 5.1)
+    enumerize (1.1.1)
+      activesupport (>= 3.2)
     erubis (2.7.0)
     execjs (2.6.0)
     factory_girl (4.5.0)
@@ -311,6 +313,7 @@ DEPENDENCIES
   devise
   devise-i18n
   dotenv-rails
+  enumerize (~> 1.1)
   factory_girl_rails
   guard-rspec
   jbuilder (~> 2.0)
@@ -319,7 +322,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma
-  rack-cors (~> 0.4.0)
+  rack-cors (~> 0.4)
   rack-timeout
   rails (= 4.2.5.2)
   rails-i18n

@@ -22,7 +22,8 @@ gem 'versionist'
 gem 'responders'
 gem 'active_model_serializers', '~> 0.9.3'
 gem 'simple_token_authentication', '~> 1.0'
-gem 'rack-cors', '~> 0.4.0'
+gem 'rack-cors', '~> 0.4'
+gem 'enumerize', '~> 1.1'
 
 group :production, :staging do
   gem 'rails_stdout_logging'
