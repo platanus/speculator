@@ -32,6 +32,7 @@ end
 
 
 group :development, :test do
+  gem 'annotate'
   gem 'dotenv-rails'
   gem 'pry-rails'
   gem 'pry-byebug'
