@@ -15,13 +15,6 @@
 #
 # and, you'll have to watch "config/Guardfile" instead of "Guardfile"
 
-guard 'brakeman', :run_on_start => true do
-  watch(%r{^app/.+\.(erb|haml|rhtml|rb)$})
-  watch(%r{^config/.+\.rb$})
-  watch(%r{^lib/.+\.rb$})
-  watch('Gemfile')
-end
-
 # Note: The cmd option is now required due to the increasing number of ways
 #       rspec may be run, below are examples of the most common uses.
 #  * bundler: 'bundle exec rspec'
