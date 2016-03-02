@@ -24,12 +24,12 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'simple_token_authentication', '~> 1.0'
 gem 'rack-cors', '~> 0.4'
 gem 'enumerize', '~> 1.1'
+gem 'trade-o-matic', path: '../trade-o-matic'
 
 group :production, :staging do
   gem 'rails_stdout_logging'
   gem 'rack-timeout'
 end
-
 
 group :development, :test do
   gem 'annotate'
@@ -40,6 +40,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'guard-rspec', require: false
   gem 'rspec-nc', require: false
+  gem 'terminal-notifier-guard', '~> 1.6.1'
 end
 
 
