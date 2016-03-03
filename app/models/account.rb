@@ -1,7 +1,4 @@
-require 'forwardable'
-
 class Account < ActiveRecord::Base
-  extend Forwardable
 
   belongs_to :robot
   has_many :orders, inverse_of: :account, dependent: :destroy
@@ -9,16 +6,6 @@ class Account < ActiveRecord::Base
   validates :name, :exchange, presence: true
   validates :base_currency, :quote_currency, presence: true
   validates :credentials, yaml_hash: true, allow_nil: true
-
-  def pair
-    @pair ||= Trader::CurrencyPair.for_code(base_currency.to_sym, quote_currency.to_sym)
-  end
-
-  def core_account
-    @core ||= load_core_account
-  end
-
-  def_delegators :core_account, :base_balance, :quote_balance
 
   def credentials=(_value)
     @credentials = _value
@@ -44,11 +31,6 @@ class Account < ActiveRecord::Base
       self.encrypted_credentials = CredentialEncryptionService.encrypt @credentials
       @credentials = nil
     end
-  end
-
-  def load_core_account
-    base_account = Trader.account exchange, parsed_credentials
-    base_account.using pair
   end
 end
 
