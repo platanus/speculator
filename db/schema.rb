@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301185148) do
+ActiveRecord::Schema.define(version: 20160303210622) do
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "robot_id",              limit: 4
@@ -70,6 +70,8 @@ ActiveRecord::Schema.define(version: 20160301185148) do
     t.datetime "closed_at"
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
+    t.string   "base_currency",   limit: 255
+    t.string   "quote_currency",  limit: 255
   end
 
   add_index "orders", ["account_id"], name: "index_orders_on_account_id", using: :btree
