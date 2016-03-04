@@ -6,6 +6,7 @@ RSpec.describe Order, type: :model do
 
   describe "associations" do
     it { is_expected.to belong_to(:account) }
+    it { should enumerize(:instruction).in({:bid => 0, :ask => 1}).with_scope(true) }
   end
 
   describe "validations" do

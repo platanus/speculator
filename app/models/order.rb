@@ -1,7 +1,7 @@
 class Order < ActiveRecord::Base
   extend Enumerize
 
-  enumerize :instruction, :in => { Trader::Order::TYPE_BID => 0, Trader::Order::TYPE_ASK => 1 }, scope: :true
+  enumerize :instruction, :in => { Trader::Order::TYPE_BID => 0, Trader::Order::TYPE_ASK => 1 }, scope: true
 
   belongs_to :account
 
