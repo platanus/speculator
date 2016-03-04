@@ -10,11 +10,11 @@ RSpec.describe SyncOrder do
 
   context "when order is new" do
     describe "save!" do
-      before { subject.save! }
-      it { expect(subject.order.instruction).to eq :ask }
-      it { expect(subject.order.volume).to eq 1.0 }
-      it { expect(subject.order.pending_volume).to eq 1.0 }
-      it { expect(subject.order.price).to eq 300_000 }
+      it { expect { subject.save! }.to change { Order.count }.by(1) }
+      it { subject.save!; expect(subject.order.instruction).to eq :ask }
+      it { subject.save!; expect(subject.order.volume).to eq 1.0 }
+      it { subject.save!; expect(subject.order.pending_volume).to eq 1.0 }
+      it { subject.save!; expect(subject.order.price).to eq 300_000 }
     end
   end
 
