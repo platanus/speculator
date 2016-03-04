@@ -21,4 +21,15 @@ RSpec.describe SyncAccount do
     it { expect(subject.quote_balance.amount).to eq(10000000.0) }
   end
 
+  describe "bid" do
+    it { expect { subject.bid(1.0, 100_000) }.to change { subject.core_account.backend.bids.count }.by(1) }
+    it { expect { subject.bid(1.0, 100_000) }.to change { account.orders.count }.by(1) }
+  end
+
+  describe "ask" do
+    it { expect { subject.ask(1.0, 100_000) }.to change { subject.core_account.backend.asks.count }.by(1) }
+    it { expect { subject.ask(1.0, 100_000) }.to change { account.orders.count }.by(1) }
+  end
+
+
 end
