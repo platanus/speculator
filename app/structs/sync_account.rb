@@ -11,6 +11,14 @@ class SyncAccount
     @account = _account
   end
 
+  def orders(_options={}, &_block)
+    orders = account.orders
+    orders = orders.with_instruction(_options[:instruction]) if _options.key? :instruction
+    orders = orders.open if _options[:open]
+    orders = _block.call orders if _block
+    orders.map { |o| decorate o }
+  end
+
   def pair
     @pair ||= Trader::CurrencyPair.for_code(account.base_currency.to_sym, account.quote_currency.to_sym)
   end
@@ -35,8 +43,14 @@ class SyncAccount
   end
 
   def create_order(_raw)
-    order = SyncOrder.new account.orders.new, _raw
-    order.save!
+    order = decorate account.orders.new
+    order.bind! _raw
+    order
+  end
+
+  def decorate(_order)
+    order = SyncOrder.new _order
+    order.account = self # set inverse
     order
   end
 end

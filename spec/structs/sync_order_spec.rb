@@ -5,22 +5,28 @@ RSpec.describe SyncOrder do
   let(:config) { { base: 'BTC', quote: 'CLP', base_balance: 10.0, quote_balance: 10000000.0 } } # used by fake backend as configuration
   let(:trader_account) { Trader.account(:fake, config).using(:BTC, :CLP) }
   let(:trader_backend) { trader_account.backend }
+  let(:trader_order) { trader_account.ask(1.0, 300_000) }
 
-  subject { described_class.new build(:order), trader_account.ask(1.0, 300_000) }
+  subject { described_class.new build(:order) }
 
   context "when order is new" do
-    describe "save!" do
-      it { expect { subject.save! }.to change { Order.count }.by(1) }
-      it { subject.save!; expect(subject.order.instruction).to eq :ask }
-      it { subject.save!; expect(subject.order.volume).to eq 1.0 }
-      it { subject.save!; expect(subject.order.pending_volume).to eq 1.0 }
-      it { subject.save!; expect(subject.order.price).to eq 300_000 }
+    describe "bind!" do
+      it { expect { subject.bind!(trader_order) }.to change { Order.count }.by(1) }
+
+      it "should update local order" do
+        subject.bind! trader_order
+
+        expect(subject.order.instruction).to eq :ask
+        expect(subject.order.volume).to eq 1.0
+        expect(subject.order.pending_volume).to eq 1.0
+        expect(subject.order.price).to eq 300_000
+      end
     end
   end
 
-  context "when order is not new" do
+  context "when order is already bound" do
 
-    before { subject.save! }
+    before { subject.bind!(trader_order) }
 
     describe "cancel!" do
       before { subject.cancel! }
