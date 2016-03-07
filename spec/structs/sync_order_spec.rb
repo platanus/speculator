@@ -28,6 +28,15 @@ RSpec.describe SyncOrder do
 
     before { subject.bind!(trader_order) }
 
+    context "and AR object is new instance" do
+
+      let(:fresh_ref) { described_class.new Order.find subject.order.id }
+
+      describe "refresh!" do
+        it { expect { fresh_ref.refresh! }.not_to raise_error }
+      end
+    end
+
     describe "cancel!" do
       before { subject.cancel! }
       it { expect(subject.order.pending_volume).to eq 1.0 }

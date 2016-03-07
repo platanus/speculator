@@ -54,7 +54,7 @@ class SyncOrder
   end
 
   def core_order
-    @core ||= account.core_account.find_order ex_id
+    @core ||= account.core_account.find_position ex_id
   end
 
   private
