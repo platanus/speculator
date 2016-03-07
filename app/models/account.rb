@@ -20,7 +20,7 @@ class Account < ActiveRecord::Base
   def parsed_credentials
     credentials.tap do |creds|
       return nil if creds.nil?
-      return HashWithIndifferentAccess.new YAML.load creds
+      return YAML.load(creds).symbolize_keys
     end
   end
 

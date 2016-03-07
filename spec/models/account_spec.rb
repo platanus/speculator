@@ -20,7 +20,7 @@ RSpec.describe Account, type: :model do
 
   describe "parsed_credential" do
     it { expect(subject.parsed_credentials).to be_a Hash }
-    it { expect(subject.parsed_credentials['foo']).to eq 'bar' }
+    it { expect(subject.parsed_credentials[:foo]).to eq 'bar' }
   end
 
 end
