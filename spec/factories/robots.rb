@@ -4,5 +4,6 @@ FactoryGirl.define do
     engine "dummy"
     config nil
     last_execution_at nil
+    delay 60.0
   end
 end
