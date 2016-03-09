@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160308213323) do
+ActiveRecord::Schema.define(version: 20160309020731) do
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "robot_id",              limit: 4
@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 20160308213323) do
     t.datetime "last_execution_at"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
-    t.integer  "delay",             limit: 4
+    t.float    "delay",             limit: 24
     t.datetime "started_at"
     t.datetime "next_execution_at"
   end

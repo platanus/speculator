@@ -66,7 +66,7 @@ end
 #  last_execution_at :datetime
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  delay             :integer
+#  delay             :float(24)
 #  started_at        :datetime
 #  next_execution_at :datetime
 #
