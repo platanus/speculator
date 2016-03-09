@@ -6,7 +6,7 @@ class SyncAccount
   attr_reader :account
 
   def_delegators :account, :name
-  def_delegators :core_account, :base_balance, :quote_balance
+  def_delegators :core_account, :market, :base_balance, :quote_balance
 
   def initialize(_account)
     @account = _account
