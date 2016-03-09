@@ -2,7 +2,9 @@ ActiveAdmin.register Account do
 
   belongs_to :robot, parent_class: Robot
 
-  permit_params :name, :exchange, :base_currency, :quote_currency, :credentials
+  permit_params :name, :exchange, :base_currency, :quote_currency, :new_credentials
+
+  form :partial => "form"
 
   controller do
     def index

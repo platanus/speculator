@@ -1,0 +1,29 @@
+<%= semantic_form_for [:admin, @account.robot, @account], builder: ActiveAdmin::FormBuilder do |f| %>
+  <%= f.inputs "Details" do %>
+    <%= f.input :name %>
+    <%= f.input :exchange, as: :select, collection: [ 'surbtc', 'bitstamp' ] %>
+    <%= f.input :quote_currency %>
+    <%= f.input :quote_currency %>
+  <% end %>
+  <% if @account.new_record? %>
+    <%= f.inputs "Credentials" do %>
+      <%= f.input :new_credentials, as: :text %>
+    <% end %>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action(:submit) %>
+    <%= f.cancel_link %>
+  <% end %>
+<% end %>
+
+<% unless @account.new_record? %>
+  <%= semantic_form_for [:admin, @account.robot, @account], builder: ActiveAdmin::FormBuilder do |f| %>
+    <%= f.inputs "Change Credentials" do %>
+      <%= f.input :new_credentials, as: :text %>
+    <% end %>
+    <%= f.actions do %>
+      <%= f.action(:submit) %>
+      <%= f.cancel_link %>
+    <% end %>
+  <% end %>
+<% end %>
