@@ -47,7 +47,29 @@ ActiveAdmin.register Robot do
     active_admin_comments
   end
 
-  action_item :only => :show do
+  member_action :enable, method: :post do
+    resource.enable
+    redirect_to resource_path, notice: "Robot enabled!"
+  end
+
+  member_action :disable, method: :post do
+    resource.disable
+    redirect_to resource_path, notice: "Robot disabled!"
+  end
+
+  action_item :add_account, only: :show do
     link_to('Add Account', new_admin_robot_account_path(robot))
+  end
+
+  action_item :disable, only: :show, if: proc { robot.enabled? } do
+    link_to('Disable', disable_admin_robot_path(robot), method: :post)
+  end
+
+  action_item :force, only: :show, if: proc { robot.enabled? } do
+    link_to('Force Run', enable_admin_robot_path(robot), method: :post)
+  end
+
+  action_item :enable, only: :show, if: proc { !robot.enabled? } do
+    link_to('Enable', enable_admin_robot_path(robot), method: :post)
   end
 end
