@@ -19,12 +19,11 @@ class BaseEngine
     @accounts.select { |a| a.name == _name.to_s }
   end
 
-  def prepare
-    unpack_config config
-  end
-
   def tick
-    Trader::Currency.isolate_conversions { perform }
+    Trader::Currency.isolate_conversions do
+      unpack_config config
+      perform
+    end
   end
 
   # TODO: provide alert generation methods to engines
