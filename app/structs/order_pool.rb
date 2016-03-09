@@ -22,7 +22,7 @@ class OrderPool
     @orders = @orders.select(&:open?)
   end
 
-  def sync(_new_orders, _options={})
+  def sync(_new_orders)
     refresh_orders
     _new_orders = process_new_orders _new_orders
     _new_orders = merge_orders _new_orders
