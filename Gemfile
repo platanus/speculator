@@ -25,6 +25,7 @@ gem 'simple_token_authentication', '~> 1.0'
 gem 'rack-cors', '~> 0.4'
 gem 'enumerize', '~> 1.1'
 gem 'trade-o-matic', path: '../trade-o-matic'
+gem 'delayed_job_active_record'
 
 group :production, :staging do
   gem 'rails_stdout_logging'
