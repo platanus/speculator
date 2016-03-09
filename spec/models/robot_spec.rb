@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Robot, type: :model do
 
-  subject { create(:robot) }
+  subject { create(:robot, delay: 5.0) }
 
   describe "associations" do
     it { is_expected.to have_many(:accounts) }
@@ -20,7 +20,7 @@ RSpec.describe Robot, type: :model do
 
   describe "load_engine" do
     it { expect(subject.load_engine).to be_a DummyEngine }
-    it { expect(subject.load_engine.config).to be nil }
+    it { expect(subject.load_engine.config).to eq({ 'delay' => 5.0 }) }
   end
 
   describe "enable" do

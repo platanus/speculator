@@ -35,7 +35,7 @@ class Robot < ActiveRecord::Base
   end
 
   def parsed_config
-    return nil if config.nil?
+    return {} if config.nil?
     YAML.load config
   end
 
@@ -45,10 +45,14 @@ class Robot < ActiveRecord::Base
   end
 
   def load_engine
-    engine_class.new accounts.to_a, parsed_config
+    engine_class.new accounts.to_a, parsed_config.merge(fixed_config)
   end
 
   private
+
+  def fixed_config
+    { 'delay' => delay }
+  end
 
   def engine_exists?
     errors.add :engine, "invalid engine #{engine}" if engine_class.nil?
