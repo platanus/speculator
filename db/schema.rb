@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309180940) do
+ActiveRecord::Schema.define(version: 20160309210705) do
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "robot_id",              limit: 4
@@ -92,6 +92,14 @@ ActiveRecord::Schema.define(version: 20160309180940) do
 
   add_index "orders", ["account_id"], name: "index_orders_on_account_id", using: :btree
 
+  create_table "robot_logs", force: :cascade do |t|
+    t.integer  "robot_id",   limit: 4
+    t.datetime "created_at"
+    t.text     "message",    limit: 65535
+  end
+
+  add_index "robot_logs", ["robot_id"], name: "index_robot_logs_on_robot_id", using: :btree
+
   create_table "robots", force: :cascade do |t|
     t.string   "name",              limit: 255
     t.string   "engine",            limit: 255
@@ -122,4 +130,5 @@ ActiveRecord::Schema.define(version: 20160309180940) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "robot_logs", "robots"
 end

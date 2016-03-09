@@ -1,6 +1,7 @@
 class Robot < ActiveRecord::Base
 
   has_many :accounts, inverse_of: :robot
+  has_many :logs, class_name: 'RobotLog', inverse_of: :robot
 
   validates :name, :engine, :delay, presence: true
   validates :config, yaml_hash: true, allow_nil: true
