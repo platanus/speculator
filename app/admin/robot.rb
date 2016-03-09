@@ -29,6 +29,10 @@ ActiveAdmin.register Robot do
       default_attribute_table_rows.each do |field|
         row field
       end
+
+      row :log do
+        robot.logs.pluck(:message).join "\n"
+      end
     end
 
     panel "Accounts" do
