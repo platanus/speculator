@@ -1,6 +1,6 @@
 ActiveAdmin.register Robot do
 
-  permit_params :name, :engine, :config
+  permit_params :name, :engine, :delay, :config
 
   filter :name
   filter :engine,  as: :check_boxes, collection: [ 'dummy', 'ask_replicator' ]
@@ -8,6 +8,7 @@ ActiveAdmin.register Robot do
   index do
     column :name
     column :engine
+    column :delay
     column :last_execution_at
     actions defaults: true
   end
@@ -17,6 +18,7 @@ ActiveAdmin.register Robot do
     f.inputs "Details" do
       input :name
       input :engine, as: :select, collection: [ 'dummy', 'ask_replicator' ]
+      input :delay
       input :config, as: :text
     end
     f.actions
