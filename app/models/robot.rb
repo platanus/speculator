@@ -39,18 +39,14 @@ class Robot < ActiveRecord::Base
     true
   end
 
-  def parsed_config
-    return {} if config.nil?
-    YAML.load config
-  end
-
   def engine_class
     return nil if engine.nil?
     EngineResolver.new(engine).resolve
   end
 
-  def load_engine
-    engine_class.new accounts.to_a, parsed_config.merge(fixed_config)
+  def engine_config
+    return fixed_config if config.nil?
+    YAML.load(config).merge fixed_config
   end
 
   private

@@ -1,10 +1,9 @@
 class BaseEngine
 
-  attr_reader :config
+  attr_reader :robot
 
-  def initialize(_accounts, _config)
-    @accounts = _accounts.map { |a| SyncAccount.new a }
-    @config = _config
+  def initialize(_robot)
+    @robot = _robot
   end
 
   def get_account(_name=nil)
@@ -15,13 +14,17 @@ class BaseEngine
   end
 
   def get_accounts(_name=nil)
-    return @accounts.clone if _name.nil?
-    @accounts.select { |a| a.name == _name.to_s }
+    return accounts.clone if _name.nil?
+    accounts.select { |a| a.name == _name.to_s }
+  end
+
+  def log(_message, _type=:info)
+    robot.logs.create! message: _message
   end
 
   def tick
     Trader::Currency.isolate_conversions do
-      unpack_config config
+      unpack_config robot.engine_config
       perform
     end
   end
@@ -36,5 +39,11 @@ class BaseEngine
 
   def perform
     raise NotImplementedError, '`perform` method not implemented'
+  end
+
+  private
+
+  def accounts
+    @accounts ||= robot.accounts.map { |a| SyncAccount.new a }
   end
 end

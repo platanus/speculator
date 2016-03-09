@@ -2,10 +2,11 @@ require 'rails_helper'
 
 describe BaseEngine do
 
-  let(:accounts) { 3.times.map { |i| create(:account, name: "account-#{i}") } }
-  let(:config) { { foo: 'bar' } }
+  let(:config) { "foo: 'bar'" }
+  let(:robot) { create(:robot, config: config) }
+  let!(:accounts) { 3.times.map { |i| create(:account, robot: robot, name: "account-#{i}") } }
 
-  let(:engine) { Class.new(BaseEngine).new accounts, config }
+  let(:engine) { Class.new(BaseEngine).new robot }
 
   before do
     allow(engine).to receive(:unpack_config).and_return(nil)
@@ -21,6 +22,10 @@ describe BaseEngine do
   describe "get_accounts" do
     it { expect(engine.get_accounts.count).to eq 3 }
     it { expect(engine.get_accounts('account-2').count).to eq 1 }
+  end
+
+  describe "log" do
+    it { expect { engine.log('hello') }.to change { robot.logs.count }.by(1) }
   end
 
   describe "tick" do

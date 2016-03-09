@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Robot, type: :model do
 
-  subject { create(:robot, delay: 5.0) }
+  subject { create(:robot, delay: 5.0, config: 'foo: bar') }
 
   describe "associations" do
     it { is_expected.to have_many(:accounts) }
@@ -19,9 +19,8 @@ RSpec.describe Robot, type: :model do
     it { is_expected.not_to allow_value('* yaml').for(:config) }
   end
 
-  describe "load_engine" do
-    it { expect(subject.load_engine).to be_a DummyEngine }
-    it { expect(subject.load_engine.config).to eq({ 'delay' => 5.0 }) }
+  describe "engine_config" do
+    it { expect(subject.engine_config).to eq({ 'delay' => 5.0, 'foo' => 'bar' }) }
   end
 
   describe "enable" do
