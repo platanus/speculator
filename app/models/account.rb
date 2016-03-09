@@ -5,32 +5,41 @@ class Account < ActiveRecord::Base
 
   validates :name, :exchange, presence: true
   validates :base_currency, :quote_currency, presence: true
-  validates :credentials, yaml_hash: true, allow_nil: true
+  validates :new_credentials, yaml_hash: true, allow_nil: true
 
-  def credentials=(_value)
-    @credentials = _value
+  before_save :save_credentials_and_clear, if: :credentials_changed?
+
+  def new_credentials=(_value)
+    @new_credentials = _value.empty? ? nil : _value
+    @credentials_changed = true
+  end
+
+  def new_credentials
+    @new_credentials
+  end
+
+  def credentials_changed?
+    !!@credentials_changed
   end
 
   def credentials
-    return @credentials if @credentials
-    return nil if encrypted_credentials.nil?
-    CredentialEncryptionService.decrypt(encrypted_credentials)
+    CredentialEncryptionService.decrypt encrypted_credentials
   end
 
   def parsed_credentials
     credentials.tap do |creds|
-      return nil if creds.nil?
+      return { } if creds.nil?
       return YAML.load(creds).symbolize_keys
     end
   end
 
   private
 
-  def save_decrypted_credentials
-    if @credentials
-      self.encrypted_credentials = CredentialEncryptionService.encrypt @credentials
-      @credentials = nil
-    end
+  def save_credentials_and_clear
+    self.encrypted_credentials = CredentialEncryptionService.encrypt new_credentials
+    @new_credentials = nil
+    @credentials_changed = false
+    nil
   end
 end
 
