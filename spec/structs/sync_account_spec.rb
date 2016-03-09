@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe SyncAccount do
 
   let(:credentials) { "base: BTC\nquote: CLP\nbase_balance: 10.0\nquote_balance: 10000000.0" } # used by fake backend as configuration
-  let(:account) { create(:account, exchange: 'fake', base_currency: 'BTC', quote_currency: "CLP", credentials: credentials) }
+  let(:account) { create(:account, exchange: 'fake', base_currency: 'BTC', quote_currency: "CLP", new_credentials: credentials) }
 
   subject { described_class.new account }
 

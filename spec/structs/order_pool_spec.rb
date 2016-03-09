@@ -3,7 +3,7 @@ require 'rails_helper'
 describe OrderPool do
 
   let(:credentials) { "base: BTC\nquote: CLP\nbase_balance: 10.0\nquote_balance: 1000000.0" } # used by fake backend as configuration
-  let(:raw_account) { create(:account, exchange: 'fake', base_currency: 'BTC', quote_currency: "CLP", credentials: credentials) }
+  let(:raw_account) { create(:account, exchange: 'fake', base_currency: 'BTC', quote_currency: "CLP", new_credentials: credentials) }
   let(:account) { SyncAccount.new raw_account }
   let(:backend) { account.core_account.backend }
 
