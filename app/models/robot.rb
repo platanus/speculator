@@ -18,6 +18,10 @@ class Robot < ActiveRecord::Base
     self.update_attributes!(next_execution_at: nil)
   end
 
+  def enabled?
+    !next_execution_at.nil?
+  end
+
   def try_set_started
     with_lock do
       return false unless started_at.nil?
