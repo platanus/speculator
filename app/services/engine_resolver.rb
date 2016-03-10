@@ -10,6 +10,8 @@ class EngineResolver
     case name
     when :dummy
       DummyEngine
+    when :ask_replicator
+      AskReplicatorEngine
     else
       nil
     end
