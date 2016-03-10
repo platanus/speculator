@@ -42,7 +42,7 @@ RSpec.describe SyncOrder do
       it { expect(subject.order.pending_volume).to eq 1.0 }
       it { expect(subject.order.unsynced_volume).to eq 0.0}
       it { expect(subject.order.open?).to be_falsy }
-      it { expect(trader_backend.asks.first[:status]).to eq(Trader::Position::STATUS_CANCELED)}
+      it { expect(trader_backend.asks.first[:status]).to eq(Trader::AccountOrder::CANCELED)}
     end
 
     context "and has been partially executed" do

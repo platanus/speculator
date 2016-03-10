@@ -54,14 +54,14 @@ class SyncOrder
   end
 
   def core_order
-    @core ||= account.core_account.find_position ex_id
+    @core ||= account.core_account.find_order ex_id
   end
 
   private
 
   def bind_to_core
     order.ex_id = core_order.id
-    order.instruction = core_order.type
+    order.instruction = core_order.instruction
     order.base_currency = core_order.volume.currency.code
     order.volume = core_order.volume.amount
     order.quote_currency = core_order.price.currency.code

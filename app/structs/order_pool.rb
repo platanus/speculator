@@ -42,13 +42,13 @@ class OrderPool
 
   def process_new_orders(_orders)
     _orders.map do |order|
-      raise ArgumentError, "invalid order type" if invalid_order? order
+      raise ArgumentError, "invalid order instruction" if invalid_order? order
       order.convert_to pair
     end
   end
 
   def invalid_order?(_order)
-    _order.type != instruction
+    _order.instruction != instruction
   end
 
   def merge_orders(_orders)
@@ -84,7 +84,7 @@ class OrderPool
   end
 
   def sorted_orders
-    if instruction == Trader::Order::TYPE_ASK
+    if instruction == Trader::Order::ASK
       orders.sort_by { |p| p.price.amount }
     else
       orders.sort_by { |p| p.price.amount * -1 }
@@ -103,7 +103,7 @@ class OrderPool
     _raw_orders.each do |order|
       break if _limit <= 0.0
 
-      if instruction == Trader::Order::TYPE_ASK
+      if instruction == Trader::Order::ASK
         order.volume = order.volume.currency.pack([_limit, order.volume.amount].min)
         _limit -= order.volume.amount
       else
@@ -122,7 +122,7 @@ class OrderPool
 
   def available_balance
     # TODO: allow configuration of limit
-    if instruction == Trader::Order::TYPE_ASK
+    if instruction == Trader::Order::ASK
       account.base_balance.available_amount
     else
       account.quote_balance.available_amount
