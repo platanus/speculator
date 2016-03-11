@@ -2,6 +2,7 @@
   "name": "Surbtc-bots",
   "version": "1.0.0",
   "dependencies": {
-    "angular": "^1.5.0"
+    "angular": "^1.5.0",
+    "angular-restmod": "^1.1.11"
   }
 }
