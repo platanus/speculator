@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "angular": "^1.5.0",
-    "angular-restmod": "^1.1.11"
+    "angular-restmod": "^1.1.11",
+    "lodash": "^4.6.1"
   }
 }
