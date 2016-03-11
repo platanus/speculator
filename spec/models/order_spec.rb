@@ -11,6 +11,7 @@ RSpec.describe Order, type: :model do
 
   describe "validations" do
     it { is_expected.to validate_presence_of(:ex_id) }
+    it { is_expected.to validate_presence_of(:instruction) }
     it { is_expected.to validate_presence_of(:volume) }
     it { is_expected.to validate_presence_of(:price) }
     it { is_expected.to validate_presence_of(:base_currency) }
