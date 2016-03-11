@@ -8,7 +8,7 @@
   Model.$inject = [ 'restmod', 'inflector' ];
 
   function Model(restmod, inflector) {
-    return restmod.mixin('DefaultPacker', {
+    return restmod.mixin({
       $config: {
         style: 'ActiveAdmin',
         urlPrefix: '/admin',
@@ -19,7 +19,15 @@
         Model: {
           decodeName: inflector.camelize,
           encodeName: function(_v) { return inflector.parameterize(_v, '_'); },
-          encodeUrlName: inflector.parameterize
+          encodeUrlName: inflector.parameterize,
+          unpack: function(_resource, _raw) {
+            if(_resource.$isCollection) {
+              name = this.getProperty('jsonRoot') || this.identity(true);
+              return _raw[name];
+            } else {
+              return _raw;
+            }
+          }
         }
       },
       $hooks: {
