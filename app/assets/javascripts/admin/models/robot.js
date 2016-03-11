@@ -9,7 +9,13 @@
 
   function Model(restmod) {
     return restmod.model('robots').mix({
-      logs: { hasMany: 'RobotLog', path: 'robot_logs' }
+      logs: { hasMany: 'RobotLog', path: 'robot_logs' },
+      isRunning: function() {
+        return this.startedAt != null;
+      },
+      isEnabled: function() {
+        return this.nextExecutionAt != null;
+      }
     });
   }
 })();
