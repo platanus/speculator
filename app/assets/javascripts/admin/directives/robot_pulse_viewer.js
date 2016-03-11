@@ -5,9 +5,9 @@
     .module('ActiveAdmin')
     .directive('robotPulseViewer', Directive);
 
-  Directive.$inject = ['$interval', '$rootScope', 'Robot'];
+  Directive.$inject = ['$interval', 'Robot', 'RobotStatusService'];
 
-  function Directive($interval, $rootScope, Robot) {
+  function Directive($interval, Robot, RobotStatusService) {
     return {
       template: '<div class="robot-pulse">\
         <div ng-show="robot.isRunning()" class="robot-status robot-status-running">Running</div>\
@@ -21,21 +21,18 @@
       },
       link: function(_scope) {
         _scope.$watch('robotId', function(_id) {
-          if(_id) _scope.robot = Robot.$find(_id);
+          if(_id) _scope.robot = updateRobot(Robot.$find(_id));
         });
 
-        var isRunning = false;
-
         $interval(function() {
-          if(_scope.robot) {
-            _scope.robot.$fetch().$then(function(_robot) {
-              if(_robot.isRunning() != isRunning) {
-                isRunning = _robot.isRunning();
-                $rootScope.$broadcast(isRunning ? 'robot-started' : 'robot-finished', _robot.id)
-              }
-            });
-          }
+          if(_scope.robot) updateRobot(_scope.robot)
         }, 1000);
+
+        function updateRobot(_robot) {
+          return _robot.$fetch().$then(function(_robot) {
+            RobotStatusService.update(_robot);
+          });
+        }
       }
     };
   }
