@@ -10,6 +10,7 @@ RSpec.describe Account, type: :model do
   end
 
   describe "validations" do
+    it { is_expected.to validate_presence_of(:robot) }
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:exchange) }
     it { is_expected.to validate_presence_of(:base_currency) }

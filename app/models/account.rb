@@ -3,7 +3,7 @@ class Account < ActiveRecord::Base
   belongs_to :robot
   has_many :orders, inverse_of: :account, dependent: :destroy
 
-  validates :name, :exchange, presence: true
+  validates :robot, :name, :exchange, presence: true
   validates :base_currency, :quote_currency, presence: true
   validates :new_credentials, yaml_hash: true, allow_nil: true
 
