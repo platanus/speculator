@@ -1,8 +1,9 @@
-<%= semantic_form_for [:admin, @account.robot, @account], builder: ActiveAdmin::FormBuilder do |f| %>
+<%= semantic_form_for [:admin, @account], builder: ActiveAdmin::FormBuilder do |f| %>
   <%= f.inputs "Details" do %>
+    <% if @account.new_record? %><%= f.input :robot %><% end %>
     <%= f.input :name %>
     <%= f.input :exchange, as: :select, collection: [ 'surbtc', 'bitstamp' ] %>
-    <%= f.input :quote_currency %>
+    <%= f.input :base_currency %>
     <%= f.input :quote_currency %>
   <% end %>
   <% if @account.new_record? %>

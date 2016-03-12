@@ -25,13 +25,25 @@ ActiveAdmin.register Robot do
   end
 
   show do
-    attributes_table do
-      default_attribute_table_rows.each do |field|
-        row field
+    columns do
+      column do
+        attributes_table do
+          row :name
+          row :engine
+          row :created_at
+          row :updated_at
+          row :delay
+          row :config do
+            yaml_viewer robot.config
+          end
+        end
       end
 
-      row :log do
-        robot.logs.pluck(:message).join "\n"
+      column do
+        panel "Status" do
+          robot_pulse_viewer(robot) +
+          robot_log_viewer(robot)
+        end
       end
     end
 
@@ -42,8 +54,8 @@ ActiveAdmin.register Robot do
         column :base_currency
         column :quote_currency
         column do |account|
-          link_to('Edit', edit_admin_robot_account_path(robot_id: robot.id, id: account.id)) +
-          link_to("Delete", admin_robot_account_path(robot_id: robot.id, id: account.id), :method => :delete, :data => {:confirm => "Are you sure?"})
+          link_to('Edit', edit_admin_account_path(account)) +
+          link_to("Delete", admin_account_path(account), :method => :delete, :data => {:confirm => "Are you sure?"})
         end
       end
     end
@@ -62,7 +74,7 @@ ActiveAdmin.register Robot do
   end
 
   action_item :add_account, only: :show do
-    link_to('Add Account', new_admin_robot_account_path(robot))
+    link_to('Add Account', new_admin_account_path(account_robot_id: robot.id))
   end
 
   action_item :disable, only: :show, if: proc { robot.enabled? } do

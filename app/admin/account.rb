@@ -1,18 +1,27 @@
 ActiveAdmin.register Account do
+  menu false
 
-  belongs_to :robot, parent_class: Robot
-
-  permit_params :name, :exchange, :base_currency, :quote_currency, :new_credentials
+  permit_params :robot_id, :name, :exchange, :base_currency, :quote_currency, :new_credentials
 
   form :partial => "form"
 
   controller do
-    def index
-      redirect_to admin_robot_path(id: params[:robot_id])
+    def create
+      create! do |format|
+        format.html { redirect_to admin_robot_path(resource.robot) }
+      end
     end
 
-    def show
-      redirect_to admin_robot_path(id: params[:robot_id])
+    def update
+      update! do |format|
+        format.html { redirect_to admin_robot_path(resource.robot) }
+      end
+    end
+
+    def destroy
+      destroy! do |format|
+        format.html { redirect_to admin_robot_path(resource.robot) }
+      end
     end
   end
 end
