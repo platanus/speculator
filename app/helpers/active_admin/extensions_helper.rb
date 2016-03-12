@@ -13,5 +13,8 @@ module ActiveAdmin
       return "<div robot-log-viewer robot-id=\"#{_robot.id}\"></div>".html_safe
     end
 
+    def account_viewer(_account)
+      return "<div account-viewer account-id=\"#{_account.id}\"></div>".html_safe
+    end
   end
 end
