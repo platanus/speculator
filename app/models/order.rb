@@ -9,13 +9,8 @@ class Order < ActiveRecord::Base
 
   before_create :load_defaults
 
-  def self.unsynced
-    where('unsynced_volume > 0')
-  end
-
-  def self.open
-    where(closed_at: nil)
-  end
+  scope :unsynced, -> { where('unsynced_volume > 0') }
+  scope :open, -> { where(closed_at: nil) }
 
   def open?
     closed_at.nil?
