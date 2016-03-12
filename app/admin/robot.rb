@@ -48,14 +48,9 @@ ActiveAdmin.register Robot do
     end
 
     panel "Accounts" do
-      table_for(robot.accounts, :sortable => true, :class => 'index_table') do
-        column :name
-        column :exchange
-        column :base_currency
-        column :quote_currency
-        column do |account|
-          link_to('Edit', edit_admin_account_path(account)) +
-          link_to("Delete", admin_account_path(account), :method => :delete, :data => {:confirm => "Are you sure?"})
+      columns do
+        robot.accounts.each do |account|
+          column { account_viewer account }
         end
       end
     end
