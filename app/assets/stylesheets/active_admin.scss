@@ -17,8 +17,58 @@ $panelHeaderBck: #002744;
 
 @import "active_skin";
 
-
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+$panelHeader: #F0F4F5;
+$panelBorder: #CDCDCD;
+
+.robot-account-list {
+  .column {
+    max-width: 300px;
+  }
+
+  & > .panel_contents {
+    padding-top: 10px;
+  }
+}
+
+.account-widget {
+  border: 1px solid $panelBorder;
+
+  .account-details {
+    @include clearfix();
+    padding: 3px;
+    background: $panelHeader;
+    border-bottom: 1px solid $panelBorder;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+
+  .account-name, .account-exchange {
+    float: left;
+    margin-left: 3px;
+  }
+
+  .account-name a {
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .account-exchange {
+    &:before { content: "(" }
+    &:after { content: ")" }
+    margin-right: 3px;
+  }
+
+  .account-market {
+    float: right;
+  }
+
+  .account-order-chart {
+    width: 100%;
+    height: 150px;
+  }
+}

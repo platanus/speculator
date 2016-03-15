@@ -5,27 +5,25 @@
     .module('ActiveAdmin')
     .directive('accountViewer', Directive);
 
-  Directive.$inject = ['$interval', 'Account'];
+  Directive.$inject = ['$interval', 'highcharts', 'Account'];
 
-  function Directive($interval, Account) {
+  function Directive($interval, highcharts, Account) {
     return {
       template: (
-        '<div>\
-          <div><a href="{{ account.$url() }}">{{ account.name }}</a></div>\
-          <div>{{ account.exchange }}</div>\
-          <div>{{ account.baseCurrency }}\\{{ account.quoteCurrency }}</div>\
-          <div>\
-            <ul>\
-              <li ng-repeat="order in orders">{{ order.price }}</li>\
-            </ul>\
+        '<div class="account-widget">\
+          <div class="account-details">\
+            <div class="account-name"><a href="{{ account.$url() }}">{{ account.name }}</a></div>\
+            <div class="account-exchange">{{ account.exchange }}</div>\
+            <div class="account-market">{{ account.baseCurrency }}\\{{ account.quoteCurrency }}</div>\
           </div>\
+          <div class="account-order-chart"></div>\
         </div>'
       ),
       restrict: 'A',
       scope: {
         accountId: '='
       },
-      link: function(_scope) {
+      link: function(_scope, _el) {
         _scope.$watch('accountId', function(_id) {
           if(_id) {
             _scope.account = Account.$find(_id);
@@ -33,12 +31,78 @@
           }
         });
 
-        $interval(function() {
-          if(_scope.account == null) return;
+        highcharts(_el.find('.account-order-chart'), buildChartOptions()).then(function(_chart) {
+          var bids = _chart.addSeries({ color: 'green' }, false),
+              asks = _chart.addSeries({ color: 'red' }, false);
 
-          // _scope.account.$fetch();
-          _scope.orders.$refresh();
-        }, 10000);
+          function updateSeries() {
+            if(_scope.account == null) return;
+
+            // _scope.account.$fetch();
+            _scope.orders.$refresh().$then(function(_orders) {
+              bids.setData(extractPoints(_orders, 'bid'));
+              asks.setData(extractPoints(_orders, 'ask'));
+            });
+          }
+
+          updateSeries();
+          $interval(updateSeries, 30000);
+        });
+
+        function buildChartOptions() {
+          return {
+            credits: {
+              enabled: false
+            },
+            chart: {
+              type: 'area',
+              panning: false,
+              style: {
+                fontFamily: '"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif'
+              }
+            },
+            plotOptions: {
+              column: {
+                grouping: false,
+                pointPadding: 0.1,
+                groupPadding: 0.0
+              },
+              series: {
+                marker: {
+                  enabled: true
+                }
+              }
+            },
+            title: {
+              text: null
+            },
+            legend: {
+              enabled: false
+            },
+            xAxis: {
+              type: 'linear',
+              title: {
+                text: null
+              }
+            },
+            yAxis: {
+              type: 'linear',
+              floor: 0,
+              title: {
+                text: null
+              }
+            }
+          };
+        }
+
+        function extractPoints(_orders, _instruction) {
+          var mult = _instruction == 'bid' ? -1 : 1;
+          return _.chain(_orders)
+                  .filter(function(o) { return o.instruction == _instruction; })
+                  .sortBy(function(o) { return mult * o.price; })
+                  .map(function(o) { return [o.price, o.volume]; })
+                  .value();
+        }
       }
     };
   }
