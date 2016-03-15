@@ -9,7 +9,7 @@
 
   function Directive($interval, Robot, RobotStatusService) {
     return {
-      template: '<ul><li ng-repeat="log in logs.slice().reverse()">{{ log.message }}</li></ul>',
+      template: '<div class="robot-log"><ul><li ng-repeat="log in logs.slice().reverse()">{{ log.message }}</li></ul></div>',
       restrict: 'A',
       scope: {
         robotId: '='

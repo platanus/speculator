@@ -25,6 +25,12 @@ $panelHeaderBck: #002744;
 $panelHeader: #F0F4F5;
 $panelBorder: #CDCDCD;
 
+.robot-status-panel {
+  .robot-pulse {
+    margin-bottom: 10px;
+  }
+}
+
 .robot-account-list {
   .column {
     max-width: 300px;
@@ -32,6 +38,44 @@ $panelBorder: #CDCDCD;
 
   & > .panel_contents {
     padding-top: 10px;
+  }
+}
+
+.robot-pulse {
+  @include clearfix();
+
+  .robot-status {
+    float: left;
+    font-size: 14px;
+    margin-right: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .robot-status-running {
+    color: green;
+  }
+
+  .robot-status-iddle {
+    color: #0CA2C7;
+  }
+
+  .robot-next-run {
+    float: left;
+    line-height: 20px;
+    color: #888;
+  }
+}
+
+.robot-log {
+  color: #EEE;
+  background-color: black;
+  border: 1px solid grey;
+  font-family: Courier;
+
+  ul {
+    list-style: none;
+    padding-left: 5px;
   }
 }
 

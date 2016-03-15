@@ -40,7 +40,7 @@ ActiveAdmin.register Robot do
       end
 
       column do
-        panel "Status" do
+        panel "Status", class: 'robot-status-panel' do
           robot_pulse_viewer(robot) +
           robot_log_viewer(robot)
         end
