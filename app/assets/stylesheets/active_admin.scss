@@ -25,6 +25,22 @@ $panelHeaderBck: #002744;
 $panelHeader: #F0F4F5;
 $panelBorder: #CDCDCD;
 
+pre.code {
+  color: #333;
+  border: 1px solid $panelBorder;
+  background: #F2FCFF;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+  padding: 5px;
+}
+
+.attributes_table.robot {
+  th {
+    min-width: 100px;
+  }
+}
+
 .robot-status-panel {
   .robot-pulse {
     margin-bottom: 10px;
