@@ -9,7 +9,13 @@
 
   function Directive($interval, Robot, RobotStatusService) {
     return {
-      template: '<div class="robot-log"><ul><li ng-repeat="log in logs.slice().reverse()">{{ log.message }}</li></ul></div>',
+      template: (
+        '<div class="robot-log">\
+          <ul>\
+            <li ng-repeat="log in logs.slice().reverse()" class="{{ \'level-\' + log.level }}">{{ log.message }}</li>\
+          </ul>\
+        </div>'
+      ),
       restrict: 'A',
       scope: {
         robotId: '='
@@ -21,7 +27,7 @@
           if(_id) {
             robot = Robot.$new(_id);
             lastChance = true;
-            _scope.logs = robot.logs.$fetch();
+            _scope.logs = robot.logs.$search({ per_page: 1000 });
           }
         });
 
