@@ -8,6 +8,13 @@ describe BaseEngine do
 
   let(:engine) { Class.new(BaseEngine).new robot }
 
+  let(:exc_wo_backtrace) { ArgumentError.new 'foo' }
+  let(:exc_w_backtrace) do
+    exc = ArgumentError.new 'foo'
+    exc.set_backtrace ['foo', 'bar']
+    exc
+  end
+
   before do
     allow(engine).to receive(:unpack_config).and_return(nil)
     allow(engine).to receive(:perform).and_return(nil)
@@ -28,12 +35,29 @@ describe BaseEngine do
     it { expect { engine.log('hello') }.to change { robot.logs.count }.by(1) }
   end
 
+  describe "log_exception" do
+    it { expect { engine.log_exception(exc_wo_backtrace) }.to change { robot.logs.count }.by(1) }
+    it { expect { engine.log_exception(exc_w_backtrace) }.to change { robot.logs.count }.by(3) }
+  end
+
   describe "tick" do
     # TODO: test that perform is ran in an isolated context
     it do
       expect(engine).to receive(:unpack_config)
       expect(engine).to receive(:perform)
       engine.tick
+    end
+  end
+
+  describe "tick with errors" do
+    before do
+      allow(engine).to receive(:perform).and_raise(ArgumentError, "foo")
+    end
+
+    it do
+      expect { engine.tick }.to change { robot.logs.count }.by_at_least 2
+      expect(robot.logs.first.level).to eq :error
+      expect(robot.logs.first.message).to eq 'ArgumentError: foo'
     end
   end
 end

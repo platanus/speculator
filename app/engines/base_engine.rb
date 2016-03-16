@@ -18,8 +18,14 @@ class BaseEngine
     accounts.select { |a| a.name == _name.to_s }
   end
 
-  def log(_message, _type=:info)
-    robot.logs.create! message: _message
+  def log(_message, _level=:info)
+    Rails.logger.public_send(_level, _message)
+    robot.logs.create! message: _message, level: _level
+  end
+
+  def log_exception(_exc, _level=:error)
+    log("#{_exc.class}: #{_exc.message}", _level)
+    _exc.backtrace.each { |l| log(l, _level) } if _exc.backtrace # TODO: this could be a little taxing on DB..
   end
 
   def tick
@@ -27,6 +33,8 @@ class BaseEngine
       unpack_config robot.engine_config
       perform
     end
+  rescue Exception => exc
+    log_exception exc
   end
 
   # TODO: provide alert generation methods to engines
