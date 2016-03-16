@@ -8,7 +8,7 @@
   <% end %>
   <% if @account.new_record? %>
     <%= f.inputs "Credentials" do %>
-      <%= f.input :new_credentials, as: :text %>
+      <%= f.input :credentials, as: :text %>
     <% end %>
   <% end %>
   <%= f.actions do %>
@@ -18,9 +18,9 @@
 <% end %>
 
 <% unless @account.new_record? %>
-  <%= semantic_form_for [:admin, @account.robot, @account], builder: ActiveAdmin::FormBuilder do |f| %>
+  <%= semantic_form_for [:admin, @account], builder: ActiveAdmin::FormBuilder do |f| %>
     <%= f.inputs "Change Credentials" do %>
-      <%= f.input :new_credentials, as: :text %>
+      <%= f.input :credentials, as: :text, input_html: { value: '' } %>
     <% end %>
     <%= f.actions do %>
       <%= f.action(:submit) %>
