@@ -7,7 +7,8 @@ class RobotRunnerJob < ActiveJob::Base
     load_engine(_robot).tick
     _robot.try_set_finished
   rescue Exception => exc
-    Rails.logger.error "Error while executing robot: #{exc.message}"
+    Rails.logger.error "Fatal error while executing robot: #{_robot.name}"
+    Rails.logger.error "#{exc.class}: #{exc.message}"
     Rails.logger.error exc.backtrace.join "\n"
 
     _robot.try_set_finished(exc)
