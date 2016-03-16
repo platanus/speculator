@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309210705) do
+ActiveRecord::Schema.define(version: 20160316190813) do
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "robot_id",              limit: 4
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 20160309210705) do
     t.integer  "robot_id",   limit: 4
     t.datetime "created_at"
     t.text     "message",    limit: 65535
+    t.string   "level",      limit: 255
   end
 
   add_index "robot_logs", ["robot_id"], name: "index_robot_logs_on_robot_id", using: :btree

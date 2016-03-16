@@ -1,5 +1,9 @@
 class RobotLog < ActiveRecord::Base
+  extend Enumerize
+
   belongs_to :robot
+
+  enumerize :level, in: [:info, :warn, :error]
 
   validates :message, :robot, presence: true
 end
@@ -12,6 +16,7 @@ end
 #  robot_id   :integer
 #  created_at :datetime
 #  message    :text(65535)
+#  level      :string(255)
 #
 # Indexes
 #
