@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe RobotLog, type: :model do
-
   subject { create(:robot_log) }
 
   describe "associations" do
