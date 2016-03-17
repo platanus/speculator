@@ -29,7 +29,7 @@ class BaseEngine
   end
 
   def tick
-    Trader::Currency.isolate_conversions do
+    robot_context.apply do
       unpack_config robot.engine_config
       perform
     end
@@ -50,6 +50,10 @@ class BaseEngine
   end
 
   private
+
+  def robot_context
+    RobotContextService.new robot
+  end
 
   def accounts
     @accounts ||= robot.accounts.map { |a| SyncAccount.new a }

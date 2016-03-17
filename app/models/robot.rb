@@ -39,6 +39,10 @@ class Robot < ActiveRecord::Base
     true
   end
 
+  def context_config
+    engine_config
+  end
+
   def engine_class
     return nil if engine.nil?
     EngineResolver.new(engine).resolve
