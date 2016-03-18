@@ -15,6 +15,10 @@ class SyncOrder
     @pair ||= Trader::CurrencyPair.for_code(order.base_currency.to_sym, order.quote_currency.to_sym)
   end
 
+  def price
+    pair.quote.pack order.price
+  end
+
   def volume
     pair.base.pack order.volume
   end
@@ -23,8 +27,21 @@ class SyncOrder
     pair.base.pack order.pending_volume
   end
 
-  def price
-    pair.quote.pack order.price
+  def unsynced_volume
+    pair.base.pack order.unsynced_volume
+  end
+
+  def sync_volume(_volume)
+    _volume = pair.base.pack(_volume)
+
+    if _volume > unsynced_volume
+      _volume -= unsynced_volume
+      order.update_column(:unsynced_volume, 0)
+    else
+      order.update_column(:unsynced_volume, (unsynced_volume - _volume).amount)
+      _volume -= _volume
+    end
+    _volume
   end
 
   def bind!(_core_order)
@@ -67,6 +84,7 @@ class SyncOrder
     order.quote_currency = core_order.price.currency.code
     order.price = core_order.price.amount
     order.pending_volume = core_order.pending_volume.amount
+    order.unsynced_volume = 0.0
     sync_status
   end
 
