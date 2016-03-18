@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe SyncAccount do
-
   let(:credentials) { "base: BTC\nquote: CLP\nbase_balance: 10.0\nquote_balance: 10000000.0" } # used by fake backend as configuration
   let(:account) { create(:account, exchange: 'fake', base_currency: 'BTC', quote_currency: "CLP", credentials: credentials) }
 
@@ -32,7 +31,6 @@ RSpec.describe SyncAccount do
   end
 
   context "when some orders have been created" do
-
     before do
       subject.ask(1.0, 90_000)
       subject.bid(1.0, 100_000)
@@ -46,6 +44,23 @@ RSpec.describe SyncAccount do
       it { expect(subject.orders(instruction: :bid).count).to eq 3 }
       it { expect(subject.orders(open: true).count).to eq 3 }
       it { expect(subject.orders(instruction: :bid, open: true).count).to eq 2 }
+    end
+
+    context "and some of them executed" do
+      before do
+        subject.core_account.backend.simulate_sell(100_000, 2.5)
+        subject.refresh_open_orders!
+      end
+
+      describe "unsynced_volume" do
+        it { expect(subject.unsynced_volume).to eq(2.5) }
+      end
+
+      describe "sync_volume" do
+        it { expect(subject.sync_volume(2.5)).to eq(0.0) }
+        it { expect(subject.sync_volume(3.5)).to eq(1.0) }
+        it { expect { subject.sync_volume(2.5) }.to change { account.orders.unsynced.count }.by(-2) }
+      end
     end
   end
 end

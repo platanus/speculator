@@ -24,6 +24,25 @@ class SyncAccount
     @pair ||= Trader::CurrencyPair.for_code(account.base_currency.to_sym, account.quote_currency.to_sym)
   end
 
+  def unsynced_volume
+    vol = account.orders.unsynced.map do |order|
+      decorate(order).unsynced_volume
+    end.inject(pair.base.pack(0.0), :+)
+
+    pair.base.pack vol
+  end
+
+  def sync_volume(_volume)
+    _volume = pair.base.pack(_volume)
+
+    account.orders.unsynced.order('id ASC').each do |order|
+      break if _volume <= 0.0
+      _volume = decorate(order).sync_volume _volume
+    end
+
+    pair.base.pack(_volume)
+  end
+
   def core_account
     @core ||= load_core_account
   end
@@ -34,6 +53,10 @@ class SyncAccount
 
   def ask(_volume, _price=nil)
     create_order core_account.ask _volume, _price
+  end
+
+  def refresh_open_orders!
+    orders(open: true).each &:refresh!
   end
 
   private
