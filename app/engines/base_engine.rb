@@ -28,6 +28,17 @@ class BaseEngine
     _exc.backtrace.each { |l| log(l, _level) } if _exc.backtrace # TODO: this could be a little taxing on DB..
   end
 
+  def stat(_name, _options={}, &_block)
+    stat = RobotStatService.new robot, _name
+    if _block
+      return if _options.key? :at and !stat.can_run_if_runs_at? _options[:at]
+      return if _options.key? :every and !stat.can_run_if_runs_every? _options[:every]
+      stat.record _block.call
+    else
+      stat.record _options
+    end
+  end
+
   def tick
     robot_context.apply do
       unpack_config robot.engine_config

@@ -49,6 +49,20 @@ describe BaseEngine do
     end
   end
 
+  describe "stat" do
+    it { expect { engine.stat(:balance, 1.0) }.to change { RobotStat.count }.by(1) }
+    it { expect { engine.stat(:balance) { 1.0 } }.to change { RobotStat.count }.by(1) }
+    it { expect { engine.stat(:balance, every: 1.minute) { 1.0 } }.to change { RobotStat.count }.by(1) }
+
+    context "when some stats have already been recorded" do
+      before do
+        create(:robot_stat, robot: robot, name: 'balance', created_at: Time.current - 20.minutes)
+      end
+
+      it { expect { engine.stat(:balance, every: 1.hour) { 1.0 } }.not_to change { RobotStat.count } }
+    end
+  end
+
   describe "tick with errors" do
     before do
       allow(engine).to receive(:perform).and_raise(ArgumentError, "foo")
