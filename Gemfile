@@ -24,7 +24,7 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'simple_token_authentication', '~> 1.0'
 gem 'rack-cors', '~> 0.4'
 gem 'enumerize', '~> 1.1'
-gem 'trade-o-matic', '~> 0.2' # path: '../trade-o-matic'
+gem 'trade-o-matic', '~> 0.3' # path: '../trade-o-matic'
 gem 'delayed_job_active_record'
 gem 'attr_encrypted', "~> 2.0.0"
 
@@ -44,7 +44,6 @@ group :development, :test do
   gem 'rspec-nc', require: false
   gem 'terminal-notifier-guard', '~> 1.6.1'
 end
-
 
 group :test do
   gem 'shoulda-matchers', require: false
