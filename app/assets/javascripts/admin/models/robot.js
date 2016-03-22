@@ -10,6 +10,7 @@
   function Model(restmod) {
     return restmod.model('robots').mix({
       logs: { hasMany: 'RobotLog', path: 'robot_logs' },
+      stats: { hasMany: 'RobotStat', path: 'robot_stats' },
 
       isRunning: function() {
         return this.startedAt != null;
