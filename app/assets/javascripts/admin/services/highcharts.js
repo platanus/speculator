@@ -8,7 +8,7 @@
   Service.$inject = ['$require'];
 
   function Service($require) {
-    return function(_el, _data) {
+    return function(_el, _data, _type) {
       // prepare element
       var targetId = _el.attr('id');
       if(targetId == null) {
@@ -22,7 +22,7 @@
       _data.chart.renderTo = targetId;
 
       return $require('/assets/highcharts.js').then(function() {
-        return new Highcharts.Chart(_data);
+        return new Highcharts[_type || 'Chart'](_data);
       });
     };
   }
