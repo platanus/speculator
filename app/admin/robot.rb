@@ -40,11 +40,13 @@ ActiveAdmin.register Robot do
       end
 
       column do
-        panel "Accounts", class: 'robot-account-list' do
-          columns do
-            robot.accounts.each do |account|
-              column { account_viewer account }
-            end
+        columns do
+          column { robot_stats_viewer robot }
+        end
+
+        columns do
+          robot.accounts.each do |account|
+            column { account_viewer account }
           end
         end
 
