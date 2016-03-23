@@ -1,6 +1,6 @@
 development: &default
   adapter: mysql2
-  database: surbtc_bots_development
+  database: speculator_development
   encoding: utf8
   username: root
   host: <%= ENV["BOXEN_MYSQL_HOST"] || "127.0.0.1" %>
@@ -12,7 +12,7 @@ development: &default
 
 test:
   <<: *default
-  database: surbtc_bots_test
+  database: speculator_test
 
 production: &deploy
   adapter: mysql2
