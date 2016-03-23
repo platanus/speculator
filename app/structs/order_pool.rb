@@ -1,9 +1,9 @@
 class OrderPool
-
   DEF_PRICE_THR = 0.01
   DEF_VOLUME_THR = 0.01
+  MIN_ORDER_VOLUME = 0.01
 
-  attr_reader :account, :instruction, :orders, :price_thr, :volume_thr
+  attr_reader :account, :instruction, :orders, :price_thr, :volume_thr, :min_order_volume, :logger
 
   def initialize(_account, _instruction, _options={})
     raise ArgumentError, "invalid instruction #{_instruction}" unless [:bid, :ask].include? _instruction
@@ -14,6 +14,8 @@ class OrderPool
 
     @price_thr = _options.fetch(:price_thr, DEF_PRICE_THR)
     @volume_thr = _options.fetch(:volume_thr, DEF_VOLUME_THR)
+    @min_order_volume = _options.fetch(:min_order_volume, account.pair.base.pack(MIN_ORDER_VOLUME))
+    @logger = _options.fetch(:logger, Rails.logger)
   end
 
   def refresh_orders
@@ -72,7 +74,7 @@ class OrderPool
       end
 
       if non_matched_volume / current_order.pending_volume > volume_thr
-        # puts "No enough matches (#{non_matched_volume}), discarding!"
+        logger.info "Order Pool - Canceling order #{current_order.ex_id}"
         current_order.cancel!
       else
         # puts "Matched!, new orders: #{new_orders}"
@@ -105,10 +107,12 @@ class OrderPool
 
       if instruction == Trader::Order::ASK
         order.volume = order.volume.currency.pack([_limit, order.volume.amount].min)
+        next unless order_valid? order
         _limit -= order.volume.amount
       else
         volume_limit = _limit / order.price.amount
         order.volume = order.volume.currency.pack([volume_limit, order.volume.amount].min)
+        next unless order_valid? order
         _limit -= order.volume * order.price.amount
       end
 
@@ -117,7 +121,17 @@ class OrderPool
   end
 
   def create_order(_raw_order)
+    logger.info "Order Pool - Creating #{instruction}: #{_raw_order.volume} @ #{_raw_order.price}"
     @orders << account.public_send(instruction, _raw_order.volume, _raw_order.price)
+  end
+
+  def order_valid?(_order)
+    if _order.volume < min_order_volume
+      logger.info "Order Pool - Invalid order: #{_order.volume}"
+      false
+    else
+      true
+    end
   end
 
   def available_balance
