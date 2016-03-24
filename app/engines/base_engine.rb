@@ -21,7 +21,7 @@ class BaseEngine
 
   def log_exception(_exc)
     logger.error("#{_exc.class}: #{_exc.message}")
-    _exc.backtrace.each { |l| logger.error(l, _level) } if _exc.backtrace # TODO: this could be a little taxing on DB..
+    _exc.backtrace.each { |l| logger.error l } if _exc.backtrace # TODO: this could be a little taxing on DB..
   end
 
   def stat(_name, _options={}, &_block)
