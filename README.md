@@ -48,3 +48,14 @@ That's it. You should already have a running app and each time you push to the c
 We are using the great [Devise](https://github.com/plataformatec/devise) library by [PlataformaTec](http://plataformatec.com.br/)
 and contains a built-in **** Model### Admin
 As a way to speed up development of an admin interface, we're using [ActiveAdmin](https://github.com/activeadmin/activeadmin)
+
+## Continuous Integrations
+
+The project is setup to run tests
+in [CircleCI](https://circleci.com/gh/platanus/speculator/tree/master)
+
+You can also run the test locally simulating the production environment using docker.
+Just make sure you have docker installed and run:
+
+    bin/cibuild
+

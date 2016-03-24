@@ -31,8 +31,8 @@ describe BaseEngine do
     it { expect(engine.get_accounts('account-2').count).to eq 1 }
   end
 
-  describe "log" do
-    it { expect { engine.log('hello') }.to change { robot.logs.count }.by(1) }
+  describe "logger" do
+    it { expect { engine.logger.log('hello') }.to change { robot.logs.count }.by(1) }
   end
 
   describe "log_exception" do

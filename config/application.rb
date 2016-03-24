@@ -19,5 +19,9 @@ module Speculator
     config.active_record.raise_in_transactional_callbacks = true
 
     config.active_job.queue_adapter = :delayed_job
+
+    config.before_configuration do
+      Dotenv.load(Dotenv::Railtie.root.join('.env.default'))
+    end
   end
 end
