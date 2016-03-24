@@ -1,4 +1,9 @@
 Rails.application.configure do
+
+  config.before_configuration do
+    Dotenv.load(Dotenv::Railtie.root.join('.env.development'))
+  end
+
   config.cache_classes = true
   config.eager_load = true
   config.consider_all_requests_local       = false
