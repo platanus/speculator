@@ -16,6 +16,6 @@
 !/log/.keep
 /tmp
 .env
+.env.local
 .powder
-.rbenv-vars
 vendor/assets/bower_components
