@@ -1,4 +1,7 @@
 Rails.application.configure do
+  config.before_configuration do
+    Dotenv.load(Dotenv::Railtie.root.join('.env.development'))
+  end
   config.cache_classes = true
   config.eager_load = false
   config.serve_static_files   = true

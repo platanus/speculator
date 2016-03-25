@@ -21,5 +21,5 @@ do
   sleep 0.2
 done
 
-docker-compose $DOCKE_COMPOSE_ARGS test /exec bundle exec rake db:setup
-docker-compose $DOCKE_COMPOSE_ARGS test /exec bundle exec rspec spec
+docker-compose $DOCKE_COMPOSE_ARGS test bundle exec rake db:setup
+docker-compose $DOCKE_COMPOSE_ARGS test bundle exec rspec spec
