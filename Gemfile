@@ -27,7 +27,6 @@ gem 'enumerize', '~> 1.1'
 gem 'trade-o-matic', '~> 0.3' # path: '../trade-o-matic'
 gem 'delayed_job_active_record'
 gem 'attr_encrypted', "~> 2.0.0"
-gem 'dotenv-rails'
 
 group :production, :staging do
   gem 'rails_stdout_logging'
@@ -36,6 +35,7 @@ end
 
 group :development, :test do
   gem 'annotate'
+  gem 'dotenv-rails'
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'rspec-rails'

@@ -3,6 +3,8 @@ test:
   build: "."
   dockerfile: Dockerfile.ci
   working_dir: "/app"
+  volumes:
+    - ~/bundle:/usr/local/bundle
   environment:
     RAILS_ENV: test
     MYSQL_HOST: mysql
