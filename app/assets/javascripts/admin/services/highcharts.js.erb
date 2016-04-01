@@ -21,7 +21,7 @@
       if(!_data.chart) _data.chart = {};
       _data.chart.renderTo = targetId;
 
-      return $require('/assets/highcharts.js').then(function() {
+      return $require("<%= asset_path('highcharts') %>").then(function() {
         return new Highcharts[_type || 'Chart'](_data);
       });
     };
