@@ -55,6 +55,11 @@ class SyncAccount
     create_order core_account.ask _volume, _price
   end
 
+  def cancel_every_order
+    # TODO: add support for backend: cancel all
+    orders(open: true).each &:cancel!
+  end
+
   def refresh_open_orders!
     orders(open: true).each &:refresh!
   end

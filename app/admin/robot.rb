@@ -70,6 +70,11 @@ ActiveAdmin.register Robot do
     redirect_to resource_path, notice: "Robot disabled!"
   end
 
+  member_action :clear, method: :post do
+    ClearAdminRobotJob.perform_later resource
+    redirect_to resource_path, notice: "Canceling robot orders!"
+  end
+
   action_item :add_account, only: :show do
     link_to('Add Account', new_admin_account_path(account_robot_id: robot.id))
   end
@@ -84,5 +89,9 @@ ActiveAdmin.register Robot do
 
   action_item :enable, only: :show, if: proc { !robot.enabled? } do
     link_to('Enable', enable_admin_robot_path(robot), method: :post)
+  end
+
+  action_item :clear, only: :show, if: proc { !robot.enabled? } do
+    link_to('Clear Orders', clear_admin_robot_path(robot), method: :post, data: { confirm: "Delete EVERY order?" })
   end
 end
