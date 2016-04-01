@@ -28,7 +28,7 @@
         }
 
         function setupStats(_robotId) {
-          stats = Robot.$new(_robotId).stats.$collection({ per_page: 1000, order: 'created_at_asc' });
+          stats = Robot.$new(_robotId).stats.$collection({ per_page: 20000, order: 'created_at_asc' });
           stats.$on('after-fetch-many', reloadStats);
         }
 
@@ -51,7 +51,7 @@
 
           _.each(series, function(_serie, _name) {
             if(!_serie.serie) {
-              _serie.serie = chart.addSeries({ }, false);
+              _serie.serie = chart.addSeries({ name: _name }, false);
               _serie.serie.setData(series[_name].points, false);
             }
           });
@@ -65,7 +65,7 @@
           for(var i = 0, l = _stats.length; i < l; i++) {
             group = groups[_stats[i].name];
             if(!group) group = groups[_stats[i].name] = { points: [] };
-            group.points.push([_stats[i].createdAt, _stats[i].value]);
+            group.points.push([_stats[i].createdAt * 1000, _stats[i].value]);
           }
           return groups;
         }
@@ -92,8 +92,14 @@
                 }
               }
             },
+            rangeSelector: {
+              enabled: false
+            },
             title: {
               text: null
+            },
+            xAxis: {
+              ordinal: false
             }
           };
         }
