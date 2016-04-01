@@ -40,7 +40,7 @@ class RobotStatService
   end
 
   def last_point
-    @last_point ||= stats.last
+    @last_point ||= stats.first
   end
 
   def parse_time_exp(_time)

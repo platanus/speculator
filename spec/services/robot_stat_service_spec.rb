@@ -27,10 +27,11 @@ describe RobotStatService do
     it { expect(service.record(1.0).name).to eq 'some_stat' }
   end
 
-  context "given a stat with same name has already been registered" do
+  context "given some stats with same name has already been registered" do
 
     before do
       create(:robot_stat, robot: robot, name: :some_stat, created_at: current_time - 31.minutes)
+      create(:robot_stat, robot: robot, name: :other_stat, created_at: current_time - 31.minutes)
       create(:robot_stat, robot: robot, name: :other_stat, created_at: current_time - 29.minutes)
     end
 
