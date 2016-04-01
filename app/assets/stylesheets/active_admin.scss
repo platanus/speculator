@@ -47,6 +47,16 @@ pre.code {
   }
 }
 
+.robot-stats-panel {
+  .panel_contents {
+    padding: 0;
+  }
+
+  .robot-stats-chart {
+    height: 300px;
+  }
+}
+
 .robot-account-list {
   .column {
     max-width: 300px;
