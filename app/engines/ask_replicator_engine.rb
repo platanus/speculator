@@ -57,7 +57,7 @@ class AskReplicatorEngine < BaseEngine
     pool.sync new_orders
 
     if target.unsynced_volume > min_sync_volume
-      log "Executing #{executed_amount}"
+      log "Executing #{target.unsynced_volume}"
       # source.bid target.unsynced_volume, start_price
       # target.sync_volume
     else
