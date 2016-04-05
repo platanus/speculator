@@ -1,5 +1,6 @@
-FROM platanus/ruby:2.2-alpine
+FROM platanus/ruby:2.2
 
 RUN mkdir /app
 WORKDIR /app
+
 ADD . /app

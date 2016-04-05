@@ -19,3 +19,4 @@
 .env.local
 .powder
 vendor/assets/bower_components
+vendor/bundle

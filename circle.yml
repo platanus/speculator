@@ -3,8 +3,6 @@ machine:
     - docker
 
 dependencies:
-  cache_directories:
-    - "~/bundle"
   override:
     - docker-compose -f docker-compose.ci.yml pull
     - docker-compose -f docker-compose.ci.yml build test

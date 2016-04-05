@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+trap "exit" INT
 
 DOCKE_COMPOSE_ARGS="-f docker-compose.ci.yml run"
 
@@ -21,5 +22,12 @@ do
   sleep 0.2
 done
 
+# Only run bundle install when running locally
+if [ -z "$CI" ];
+then
+  docker-compose $DOCKE_COMPOSE_ARGS test bundle install
+fi
+
+# Prepare and run the specs
 docker-compose $DOCKE_COMPOSE_ARGS test bundle exec rake db:setup
 docker-compose $DOCKE_COMPOSE_ARGS test bundle exec rspec spec
