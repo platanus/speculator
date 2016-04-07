@@ -5,23 +5,28 @@ command -v docker >/dev/null 2>&1 && docker info >/dev/null || {
   printf >&2 "\e[31mI require docker but it's not installed. Aborting.\e[0m\n"; exit 1;
 }
 
-DOCKER_COMPOSE_ARGS="-f docker-compose.ci.yml run"
+DOCKER_COMPOSE_ARGS="-f docker-compose.ci.yml"
+
+# Build Image
+build(){
+  docker-compose $DOCKER_COMPOSE_ARGS build test
+}
 
 # Wait services to be ready
 wait_services(){
   function test_service {
-    docker-compose $DOCKER_COMPOSE_ARGS test sh -c "nc -z $1 $2"
+    docker-compose $DOCKER_COMPOSE_ARGS run test sh -c "nc -z $1 $2"
   }
 
   count=0
   # Chain tests together by using &&
   until (
-    test_service '$MYSQL_HOST' '$MYSQL_PORT' \
+    test_service '$MYSQL_HOST' '$MYSQL_PORT' && \
     echo "Services ready"
   )
   do
     ((count++))
-    if [ ${count} -gt 50 ]
+    if [ $count -gt 50 ]
     then
       echo "Services didn't become ready in time"
       exit 1
@@ -34,12 +39,12 @@ wait_services(){
 
 # Prepare dependencies
 dependencies(){
-  docker-compose $DOCKER_COMPOSE_ARGS test bundle install
+  docker-compose $DOCKER_COMPOSE_ARGS run test bundle install
 }
 
 # Prepare database
 database(){
-  docker-compose $DOCKER_COMPOSE_ARGS test bundle exec rake db:create db:schema:load
+  docker-compose $DOCKER_COMPOSE_ARGS run test bundle exec rake db:create db:schema:load
 }
 
 # Run the specs
@@ -48,11 +53,12 @@ tests(){
     RSPEC_JUNIT_ARGS="-r rspec_junit_formatter --format RspecJunitFormatter -o $HOME/.rspec_reports/junit.xml"
     RSPEC_FORMAT_ARGS="--format progress --no-color"
   }
-  docker-compose $DOCKER_COMPOSE_ARGS test bundle exec rspec spec $RSPEC_FORMAT_ARGS $RSPEC_JUNIT_ARGS
+  docker-compose $DOCKER_COMPOSE_ARGS run test bundle exec rspec spec $RSPEC_FORMAT_ARGS $RSPEC_JUNIT_ARGS
 }
 
 # Run the complete ci build
 no_ci(){
+  build
   wait_services
   dependencies
   database
@@ -75,7 +81,10 @@ case "$1" in
   "specs"|"tests")
     tests
     ;;
+  "build")
+    build
+    ;;
   *)
-    echo "Usage: cibuild [services|deps|db|specs]"
+    echo "Usage: cibuild [services|deps|db|specs|build]"
     ;;
 esac
