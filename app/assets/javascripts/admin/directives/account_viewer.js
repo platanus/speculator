@@ -14,7 +14,9 @@
           <div class="account-details">\
             <div class="account-name"><a href="{{ account.$url() }}">{{ account.name }}</a></div>\
             <div class="account-exchange">{{ account.exchange }}</div>\
-            <div class="account-market">{{ account.baseCurrency }}\\{{ account.quoteCurrency }}</div>\
+            <div class="account-market">\
+              {{ account.baseBalance }} {{ account.baseCurrency }}\
+            \\{{ account.quoteBalance }} {{ account.quoteCurrency }}</div>\
           </div>\
           <div class="account-order-chart"></div>\
         </div>'
