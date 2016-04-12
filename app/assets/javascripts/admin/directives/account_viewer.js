@@ -96,11 +96,13 @@
         }
 
         function extractPoints(_orders, _instruction) {
-          var mult = _instruction == 'bid' ? -1 : 1;
+          var mult = _instruction == 'bid' ? -1 : 1,
+              accum = 0.0;
+
           return _.chain(_orders)
                   .filter(function(o) { return o.instruction == _instruction; })
                   .sortBy(function(o) { return mult * o.price; })
-                  .map(function(o) { return [o.price, o.volume]; })
+                  .map(function(o) { accum += o.volume; return [o.price, accum]; })
                   .value();
         }
       }
