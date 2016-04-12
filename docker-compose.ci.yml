@@ -4,7 +4,8 @@ test:
   dockerfile: Dockerfile.ci
   working_dir: "/app"
   volumes:
-    - ./vendor/bundle:/usr/local/bundle
+  - "./vendor/bundle:/usr/local/bundle"
+  - "$CIRCLE_TEST_REPORTS/rspec:$HOME/.rspec_reports"
   environment:
     RAILS_ENV: test
     MYSQL_HOST: mysql
