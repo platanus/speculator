@@ -32,8 +32,8 @@
         });
 
         highcharts(_el.find('.account-order-chart'), buildChartOptions()).then(function(_chart) {
-          var bids = _chart.addSeries({ color: 'green' }, false),
-              asks = _chart.addSeries({ color: 'red' }, false);
+          var bids = _chart.addSeries({ color: 'green', name: 'Bid' }, false),
+              asks = _chart.addSeries({ color: 'red', name: 'Ask' }, false);
 
           function updateSeries() {
             if(_scope.account == null) return;
@@ -55,7 +55,7 @@
               enabled: false
             },
             chart: {
-              type: 'area',
+              type: 'column',
               panning: false,
               style: {
                 fontFamily: '"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif'
