@@ -102,7 +102,7 @@
           return _.chain(_orders)
                   .filter(function(o) { return o.instruction == _instruction; })
                   .sortBy(function(o) { return mult * o.price; })
-                  .map(function(o) { accum += o.volume; return [o.price, accum]; })
+                  .map(function(o) { accum += o.pendingVolume; return [o.price, accum]; })
                   .value();
         }
       }
