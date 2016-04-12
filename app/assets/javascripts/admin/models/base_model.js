@@ -22,10 +22,9 @@
           encodeUrlName: inflector.parameterize,
           unpack: function(_resource, _raw) {
             if(_resource.$isCollection) {
-              name = this.getProperty('jsonRoot') || this.identity(true);
-              return _raw[name];
+              return _raw[this.identity(true)];
             } else {
-              return _raw;
+              return _raw[this.identity()];
             }
           }
         }
