@@ -8,11 +8,17 @@ class Account < ActiveRecord::Base
   validates :base_currency, :quote_currency, presence: true
   validates :credentials, yaml_hash: true, allow_nil: true, if: :credentials_changed?
 
+  before_update :reset_account, if: :exchange_changed?
+
   def parsed_credentials
     credentials.tap do |creds|
       return { } if creds.nil?
       return YAML.load(creds).symbolize_keys
     end
+  end
+
+  def reset_account
+    orders.delete_all
   end
 end
 
