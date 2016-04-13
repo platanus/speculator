@@ -8,6 +8,7 @@ RSpec.describe Robot, type: :model do
     it { is_expected.to have_many(:accounts) }
     it { is_expected.to have_many(:logs) }
     it { is_expected.to have_many(:stats) }
+    it { is_expected.to have_many(:alerts) }
   end
 
   describe "validations" do
