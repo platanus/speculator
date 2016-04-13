@@ -35,6 +35,11 @@ class BaseEngine
     end
   end
 
+  def alert(_title, _message = nil)
+    logger.warn "Alert: #{_message || _title}"
+    TriggerRobotAlert.new(robot: robot, title: _title, message: _message).perform
+  end
+
   def tick
     robot_context.apply do
       unpack_config robot.engine_config

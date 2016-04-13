@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe BaseEngine do
-
   let(:config) { "foo: 'bar'" }
   let(:robot) { create(:robot, config: config) }
   let!(:accounts) { 3.times.map { |i| create(:account, robot: robot, name: "account-#{i}") } }
@@ -33,6 +32,11 @@ describe BaseEngine do
 
   describe "logger" do
     it { expect { engine.logger.log('hello') }.to change { robot.logs.count }.by(1) }
+  end
+
+  describe "alert" do
+    it { expect { engine.alert(:foo) }.to change { robot.logs.count }.by(1) }
+    it { expect { engine.alert(:foo) }.to change { robot.alerts.count }.by(1) }
   end
 
   describe "log_exception" do
