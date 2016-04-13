@@ -19,7 +19,7 @@ class TriggerRobotAlert < Command.new(:robot, :title, :message)
   end
 
   def alert_triggered?
-    !alert.triggered_at.nil?
+    alert.triggered?
   end
 
   def update_alert

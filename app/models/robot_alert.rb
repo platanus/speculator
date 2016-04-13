@@ -2,6 +2,12 @@ class RobotAlert < ActiveRecord::Base
   belongs_to :robot
 
   validates :robot, :title, presence: true
+
+  scope :live, -> { where.not(triggered_at: nil) }
+
+  def triggered?
+    !triggered_at.nil?
+  end
 end
 
 # == Schema Information
