@@ -34,9 +34,9 @@ ActiveAdmin.register Robot do
           row :alerts do
             robot_alert_viewer(robot)
           end
-          row :engine
-          row :delay
-          row :config do
+          row :engine, class: 'hidden-phone'
+          row :delay, class: 'hidden-phone'
+          row :config, class: 'hidden-phone' do
             yaml_viewer robot.config
           end
           row :updated_at
@@ -52,7 +52,7 @@ ActiveAdmin.register Robot do
           end
         end
 
-        panel("Stats", class: 'robot-stats-panel') do
+        panel("Stats", class: 'robot-stats-panel hidden-phone') do
           robot_stats_viewer robot
         end
 
