@@ -1,4 +1,4 @@
-(function() {
+(function(undefined) {
   'use strict';
 
   angular
@@ -10,6 +10,7 @@
   function Model(restmod) {
     return restmod.model('robots').mix({
       logs: { hasMany: 'RobotLog', path: 'robot_logs' },
+      alerts: { hasMany: 'RobotAlert', path: 'robot_alerts' },
       stats: { hasMany: 'RobotStat', path: 'robot_stats' },
 
       isRunning: function() {
@@ -17,6 +18,22 @@
       },
       isEnabled: function() {
         return this.nextExecutionAt != null;
+      },
+
+      $hooks: {
+        'after-feed': function(_raw) {
+          var running = this.isRunning();
+
+          if(this.$wasRunning === undefined || this.$wasRunning != running) {
+            this.$dispatch(running ? 'robot-started' : 'robot-finished');
+          }
+
+          if(running) {
+            this.$dispatch('robot-running');
+          }
+
+          this.$wasRunning = running;
+        }
       }
     });
   }

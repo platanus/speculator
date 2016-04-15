@@ -5,9 +5,9 @@
     .module('ActiveAdmin')
     .directive('robotLogViewer', Directive);
 
-  Directive.$inject = ['$interval', 'Robot', 'RobotStatusService'];
+  Directive.$inject = ['RobotSingletonService'];
 
-  function Directive($interval, Robot, RobotStatusService) {
+  function Directive(RobotSingletonService) {
     return {
       template: (
         '<div class="robot-log">\
@@ -21,25 +21,17 @@
         robotId: '='
       },
       link: function(_scope) {
-        var robot = null, lastChance = true;
-
         _scope.$watch('robotId', function(_id) {
-          if(_id) {
-            robot = Robot.$new(_id);
-            lastChance = true;
-            _scope.logs = robot.logs.$search({ per_page: 1000 });
-          }
+          if(!_id) return;
+          var robot = RobotSingletonService.findAndBind(_id, _scope),
+              logs = robot.logs.$search({ per_page: 1000 });
+
+          robot.$on('robot-started', function() { logs.$clear(); })
+          robot.$on('robot-running', function() { logs.$refresh(); })
+          robot.$on('robot-finished', function() { logs.$refresh(); })
+
+          _scope.logs = logs;
         });
-
-        $interval(function() {
-          if(robot == null) return;
-
-          var isRunning = RobotStatusService.isRunning(robot);
-          if(!isRunning && !lastChance) return;
-
-          _scope.logs.$refresh();
-          lastChance = isRunning;
-        }, 1000);
       }
     };
   }

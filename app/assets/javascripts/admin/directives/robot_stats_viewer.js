@@ -5,9 +5,9 @@
     .module('ActiveAdmin')
     .directive('robotStatsViewer', Directive);
 
-  Directive.$inject = ['$interval', 'highstock', 'Robot'];
+  Directive.$inject = ['highstock', 'RobotSingletonService'];
 
-  function Directive($interval, highstock, Robot) {
+  function Directive(highstock, RobotSingletonService) {
     return {
       template: (
         '<div class="robot-stats">\
@@ -19,7 +19,8 @@
         robotId: '='
       },
       link: function(_scope, _el) {
-        var chart = null,
+        var robot = null,
+            chart = null,
             stats = null,
             lastSeries = [];
 
@@ -27,8 +28,8 @@
           chart = _chart;
         }
 
-        function setupStats(_robotId) {
-          stats = Robot.$new(_robotId).stats.$collection({ per_page: 20000, order: 'created_at_asc' });
+        function setupStats(_robot) {
+          stats = _robot.stats.$collection({ per_page: 20000, order: 'created_at_asc' });
           stats.$on('after-fetch-many', reloadStats);
         }
 
@@ -38,6 +39,7 @@
         }
 
         function reloadStats() {
+          if(!chart) return;
           var series = groupPoints(stats);
 
           _.each(lastSeries, function(_serie, _name) {
@@ -71,13 +73,18 @@
         }
 
         _scope.$watch('robotId', function(_id) {
-          if(_id) setupStats(_id);
+          if(!_id) return;
+
+          robot = RobotSingletonService.findAndBind(_id, _scope);
+          setupStats(robot);
+
+          robot.$on('robot-finished', updateStats);
+          updateStats();
         });
 
         highstock(_el.find('.robot-stats-chart'), buildChartOptions()).then(function(_chart) {
           setupChart(_chart);
           updateStats();
-          $interval(updateStats, 60000 * 5);
         });
 
         function buildChartOptions() {

@@ -28,14 +28,18 @@ ActiveAdmin.register Robot do
     columns do
       column do
         attributes_table do
-          row :name
-          row :engine
-          row :created_at
-          row :updated_at
-          row :delay
-          row :config do
+          row :status do
+            robot_pulse_viewer(robot)
+          end
+          row :alerts do
+            robot_alert_viewer(robot)
+          end
+          row :engine, class: 'hidden-phone'
+          row :delay, class: 'hidden-phone'
+          row :config, class: 'hidden-phone' do
             yaml_viewer robot.config
           end
+          row :updated_at
         end
       end
 
@@ -48,12 +52,11 @@ ActiveAdmin.register Robot do
           end
         end
 
-        panel("Stats", class: 'robot-stats-panel') do
+        panel("Stats", class: 'robot-stats-panel hidden-phone') do
           robot_stats_viewer robot
         end
 
-        panel "Status", class: 'robot-status-panel' do
-          robot_pulse_viewer(robot) +
+        panel "Logs", class: 'robot-status-panel' do
           robot_log_viewer(robot)
         end
       end

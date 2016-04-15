@@ -93,6 +93,32 @@ pre.code {
   }
 }
 
+.robot-alerts {
+  ul {
+    list-style: none;
+    @include clearfix();
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    padding: 0;
+    margin-right: 5px;
+  }
+
+  a {
+    color: white;
+    padding: 2px 5px;
+    background-color: red;
+    text-decoration: none;
+  }
+
+  a:hover {
+    background-color: #FF8888;
+  }
+}
+
 .robot-log {
   color: #EEE;
   background-color: black;
@@ -111,6 +137,7 @@ pre.code {
 
 .account-widget {
   border: 1px solid $panelBorder;
+  margin-bottom: 10px;
 
   .account-details {
     @include clearfix();
@@ -144,5 +171,52 @@ pre.code {
   .account-order-chart {
     width: 100%;
     height: 150px;
+  }
+}
+
+@media (max-width: 800px) {
+  .hidden-phone {
+    display: none;
+  }
+
+  #site_title, #utility_nav {
+    display: none !important;
+  }
+
+  #title_bar {
+    h2 {
+      font-size: 18px;
+    }
+
+    #titlebar_left, #titlebar_right {
+      height: 20px;
+    }
+
+    .breadcrumb {
+      display: none;
+    }
+
+    .action_items {
+      a {
+        padding: 5px 10px !important;
+        font-size: 14px;
+        font-weight: normal;
+        max-width: 40px;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    }
+
+    padding: 5px 15px;
+  }
+
+  #active_admin_content {
+    padding: 5px;
+    .columns {
+      .column {
+        margin-right: 0 !important;
+        width: 100% !important;
+      }
+    }
   }
 }

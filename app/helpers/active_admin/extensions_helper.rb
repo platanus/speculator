@@ -9,6 +9,10 @@ module ActiveAdmin
       return "<div robot-pulse-viewer robot-id=\"#{_robot.id}\"></div>".html_safe
     end
 
+    def robot_alert_viewer(_robot)
+      return "<div robot-alert-viewer robot-id=\"#{_robot.id}\"></div>".html_safe
+    end
+
     def robot_log_viewer(_robot)
       return "<div robot-log-viewer robot-id=\"#{_robot.id}\"></div>".html_safe
     end
