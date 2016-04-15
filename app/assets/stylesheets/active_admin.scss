@@ -93,6 +93,32 @@ pre.code {
   }
 }
 
+.robot-alerts {
+  ul {
+    list-style: none;
+    @include clearfix();
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    padding: 0;
+    margin-right: 5px;
+  }
+
+  a {
+    color: white;
+    padding: 2px 5px;
+    background-color: red;
+    text-decoration: none;
+  }
+
+  a:hover {
+    background-color: #FF8888;
+  }
+}
+
 .robot-log {
   color: #EEE;
   background-color: black;
