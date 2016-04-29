@@ -2,7 +2,7 @@
   <%= f.inputs "Details" do %>
     <% if @account.new_record? %><%= f.input :robot %><% end %>
     <%= f.input :name %>
-    <%= f.input :exchange, as: :select, collection: [ 'surbtc', 'bitstamp', 'game' ] %>
+    <%= f.input :exchange, as: :select, collection: [ 'surbtc', 'bitstamp', 'bitfinex', 'game' ] %>
     <%= f.input :base_currency %>
     <%= f.input :quote_currency %>
   <% end %>
