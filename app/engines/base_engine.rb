@@ -7,6 +7,14 @@ class BaseEngine
     @logger = RobotLoggerService.new _robot
   end
 
+  def valid_configuration?
+    validate_configuration load_configuration robot.config
+  end
+
+  def default_raw_configuration
+    dump_configuration generate_default_configuration
+  end
+
   def get_account(_name=nil)
     picks = get_accounts(_name)
     raise ArgumentError, "No account found for name #{_name}" if picks.count == 0
@@ -48,26 +56,33 @@ class BaseEngine
 
   def tick
     robot_context.apply do
-      unpack_config robot.engine_config
-      perform
+      perform_with_configuration load_configuration robot.config
     end
   rescue Exception => exc
     log_exception exc
   end
 
-  # TODO: provide alert generation methods to engines
-
-  # Abstract methods:
-
-  def unpack_config(_config)
-    raise NotImplementedError, '`unpack_config` method not implemented'
-  end
-
-  def perform
-    raise NotImplementedError, '`perform` method not implemented'
-  end
-
   private
+
+  def load_configuration(_raw) # abstract
+    _raw
+  end
+
+  def dump_configuration(_raw) # abstract
+    _raw
+  end
+
+  def generate_default_configuration # abstract
+    nil
+  end
+
+  def validate_configuration(_config) # abstract
+    true
+  end
+
+  def perform_with_configuration(_config) # abstract
+    raise NotImplementedError, '`perform_with_configuration` method not implemented'
+  end
 
   def robot_context
     RobotContextService.new robot

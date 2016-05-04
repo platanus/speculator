@@ -1,13 +1,15 @@
 class Robot < ActiveRecord::Base
+  serialize :context_config, Hash
 
   has_many :accounts, inverse_of: :robot
   has_many :logs, class_name: 'RobotLog', inverse_of: :robot
   has_many :stats, class_name: 'RobotStat', inverse_of: :robot
   has_many :alerts, class_name: 'RobotAlert', inverse_of: :robot
 
+  before_validation :reset_engine_configuration, if: :engine_changed?
   validates :name, :engine, :delay, presence: true
-  validates :config, yaml_hash: true, allow_nil: true
-  validate :engine_exists?
+  validate :engine_exists
+  validate :engine_accepts_configuration
 
   def self.due_execution
     self.where('next_execution_at < ?', Time.current)
@@ -41,28 +43,31 @@ class Robot < ActiveRecord::Base
     true
   end
 
-  def context_config
-    engine_config
+  def load_engine
+    engine_class.new self
+  end
+
+  private
+
+  def engine_exists
+    errors.add :engine, "invalid engine #{engine}" if engine_class.nil?
+  end
+
+  def reset_engine_configuration
+    if !engine_class.nil? && !load_engine.valid_configuration?
+      self.config = load_engine.default_raw_configuration
+    end
+  end
+
+  def engine_accepts_configuration
+    if !engine_class.nil? && !load_engine.valid_configuration?
+      errors.add :config, "invalid engine configuration"
+    end
   end
 
   def engine_class
     return nil if engine.nil?
     EngineResolver.new(engine).resolve
-  end
-
-  def engine_config
-    return fixed_config if config.nil?
-    YAML.load(config).merge fixed_config
-  end
-
-  private
-
-  def fixed_config
-    { 'delay' => delay }
-  end
-
-  def engine_exists?
-    errors.add :engine, "invalid engine #{engine}" if engine_class.nil?
   end
 end
 
@@ -80,4 +85,5 @@ end
 #  delay             :float(24)
 #  started_at        :datetime
 #  next_execution_at :datetime
+#  context_config    :text(65535)
 #

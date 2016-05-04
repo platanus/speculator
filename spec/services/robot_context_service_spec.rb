@@ -2,15 +2,10 @@ require 'rails_helper'
 
 describe RobotContextService do
   let(:config) do
-    %Q{
-conversions:
-- from: USD
-  to: CLP
-  rate: 700.0
-    }
+    { 'conversions' => [{ 'from' => 'USD', 'to' => 'CLP', 'rate' => 700.0 }] }
   end
 
-  let(:robot) { create(:robot, config: config ) }
+  let(:robot) { create(:robot, context_config: config ) }
   let(:service) { described_class.new robot }
 
   describe "apply" do

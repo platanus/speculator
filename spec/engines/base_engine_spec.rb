@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe BaseEngine do
-  let(:config) { "foo: 'bar'" }
+  let(:config) { "foo config" }
   let(:robot) { create(:robot, config: config) }
   let!(:accounts) { 3.times.map { |i| create(:account, robot: robot, name: "account-#{i}") } }
 
@@ -15,8 +15,22 @@ describe BaseEngine do
   end
 
   before do
-    allow(engine).to receive(:unpack_config).and_return(nil)
-    allow(engine).to receive(:perform).and_return(nil)
+    allow(engine).to receive(:perform_with_configuration).and_return(nil)
+  end
+
+  describe "valid_configuration?" do
+    it "calls validate_configuration" do
+      expect(engine).to receive(:validate_configuration).with(config)
+      engine.valid_configuration?
+    end
+
+    it { expect(engine.valid_configuration?).to be true }
+
+    context "if validate_configuration returns false" do
+      before { allow(engine).to receive(:validate_configuration).and_return(false) }
+
+      it { expect(engine.valid_configuration?).to be false }
+    end
   end
 
   describe "get_account" do
@@ -47,8 +61,7 @@ describe BaseEngine do
   describe "tick" do
     # TODO: test that perform is ran in an isolated context
     it do
-      expect(engine).to receive(:unpack_config)
-      expect(engine).to receive(:perform)
+      expect(engine).to receive(:perform_with_configuration)
       engine.tick
     end
   end
@@ -69,7 +82,7 @@ describe BaseEngine do
 
   describe "tick with errors" do
     before do
-      allow(engine).to receive(:perform).and_raise(ArgumentError, "foo")
+      allow(engine).to receive(:perform_with_configuration).and_raise(ArgumentError, "foo")
     end
 
     it do
