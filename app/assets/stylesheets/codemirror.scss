@@ -1,0 +1,8 @@
+@import "codemirror/lib/codemirror";
+@import "codemirror/theme/twilight";
+
+.CodeMirror {
+  font-size: 14px;
+  border: 1px solid #eee;
+  height: auto;
+}
