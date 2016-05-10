@@ -1,5 +1,4 @@
 ActiveAdmin.register Robot do
-
   permit_params :name, :engine, :delay, :config
 
   filter :name
@@ -8,6 +7,7 @@ ActiveAdmin.register Robot do
   index do
     column :name
     column :engine
+    column :engine_config_lang
     column :delay
     column :last_execution_at
     actions defaults: true
@@ -19,49 +19,13 @@ ActiveAdmin.register Robot do
       input :name
       input :engine, as: :select, collection: [ 'dummy', 'ask_replicator' ]
       input :delay
-      input :config, as: :text
+      input :config, as: :code, input_html: { mode: robot.engine_config_lang }
     end
     f.actions
   end
 
   show do
-    columns do
-      column do
-        attributes_table do
-          row :status do
-            robot_pulse_viewer(robot)
-          end
-          row :alerts do
-            robot_alert_viewer(robot)
-          end
-          row :engine, class: 'hidden-phone'
-          row :delay, class: 'hidden-phone'
-          row :config, class: 'hidden-phone' do
-            yaml_viewer robot.config
-          end
-          row :updated_at
-        end
-      end
-
-      column do
-        panel("Accounts") do
-          columns do
-            robot.accounts.each do |account|
-              column { account_viewer account }
-            end
-          end
-        end
-
-        panel("Stats", class: 'robot-stats-panel hidden-phone') do
-          robot_stats_viewer robot
-        end
-
-        panel "Logs", class: 'robot-status-panel' do
-          robot_log_viewer(robot)
-        end
-      end
-    end
-
+    render partial: "show"
     active_admin_comments
   end
 

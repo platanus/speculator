@@ -1,5 +1,4 @@
 class BaseEngine
-
   attr_reader :robot, :logger
 
   def initialize(_robot)

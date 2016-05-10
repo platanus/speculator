@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Robot, type: :model do
 
-  subject { create(:robot, delay: 5.0, context_config: { 'foo' => 'bar' }) }
+  subject { create(:robot, delay: 5.0) }
 
   describe "associations" do
     it { is_expected.to have_many(:accounts) }
@@ -18,7 +18,6 @@ RSpec.describe Robot, type: :model do
     it { is_expected.not_to allow_value('anything').for(:engine) }
     it { is_expected.to allow_value('foo: bar').for(:config) }
     it { is_expected.to allow_value(nil).for(:config) }
-    it { is_expected.to allow_value(nil).for(:context_config) }
 
     context "selected engine considers config invalid" do
       before do
@@ -54,10 +53,6 @@ RSpec.describe Robot, type: :model do
           .not_to change { subject.reload.config }
       end
     end
-  end
-
-  describe "context_config" do
-    it { expect(subject.context_config).to eq({ 'foo' => 'bar' }) }
   end
 
   describe "enable" do

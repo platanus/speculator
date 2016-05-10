@@ -1,4 +1,8 @@
 class YamlEngine < BaseEngine
+  def self.config_lang
+    'yaml'
+  end
+
   private
 
   def load_configuration(_raw)

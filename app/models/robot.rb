@@ -1,6 +1,4 @@
 class Robot < ActiveRecord::Base
-  serialize :context_config, Hash
-
   has_many :accounts, inverse_of: :robot
   has_many :logs, class_name: 'RobotLog', inverse_of: :robot
   has_many :stats, class_name: 'RobotStat', inverse_of: :robot
@@ -45,6 +43,14 @@ class Robot < ActiveRecord::Base
       self.update_attributes!(started_at: nil, last_execution_at: Time.current)
     end
     true
+  end
+
+  def engine_config_lang
+    if engine_class.respond_to? :config_lang
+      engine_class.config_lang
+    else
+      'text'
+    end
   end
 
   def load_engine
