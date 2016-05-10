@@ -27,6 +27,10 @@ class Robot < ActiveRecord::Base
     !next_execution_at.nil?
   end
 
+  def context
+    RobotContext.default_context
+  end
+
   def try_set_started
     with_lock do
       return false unless started_at.nil?
