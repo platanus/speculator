@@ -35,6 +35,11 @@ pre.code {
   padding: 5px;
 }
 
+.code-input {
+  display: inline-block;
+  width: calc(80% - 5px);
+}
+
 .attributes_table.robot {
   th {
     min-width: 100px;
@@ -133,6 +138,10 @@ pre.code {
   li.level-error {
     color: red;
   }
+}
+
+.custom_footer {
+  z-index: 100;
 }
 
 .account-widget {
