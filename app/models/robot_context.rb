@@ -12,6 +12,10 @@ class RobotContext < ActiveRecord::Base
     YAML.load config
   end
 
+  def display_name
+    "Default Context"
+  end
+
   private
 
   def self.build_default_context
