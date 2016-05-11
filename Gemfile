@@ -27,6 +27,7 @@ gem 'enumerize', '~> 1.1'
 gem 'trade-o-matic', '~> 0.4' # path: '../trade-o-matic'
 gem 'delayed_job_active_record'
 gem 'attr_encrypted', "~> 2.0.0"
+gem 'cleanroom'
 
 group :production, :staging do
   gem 'rails_stdout_logging'
