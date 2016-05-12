@@ -3,8 +3,10 @@ class Robot < ActiveRecord::Base
   has_many :logs, class_name: 'RobotLog', inverse_of: :robot
   has_many :stats, class_name: 'RobotStat', inverse_of: :robot
   has_many :alerts, class_name: 'RobotAlert', inverse_of: :robot
+  has_many :config_changes, class_name: 'RobotConfigChange', inverse_of: :robot
 
   before_validation :reset_engine_configuration, if: :engine_changed?
+  before_save :save_config_history, if: :config_changed?
   validates :name, :engine, :delay, presence: true
   validate :engine_exists
   validate :engine_accepts_configuration
@@ -58,6 +60,10 @@ class Robot < ActiveRecord::Base
   end
 
   private
+
+  def save_config_history
+    config_changes.create! config: config
+  end
 
   def engine_exists
     errors.add :engine, "invalid engine #{engine}" if engine_class.nil?

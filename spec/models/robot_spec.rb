@@ -9,6 +9,7 @@ RSpec.describe Robot, type: :model do
     it { is_expected.to have_many(:logs) }
     it { is_expected.to have_many(:stats) }
     it { is_expected.to have_many(:alerts) }
+    it { is_expected.to have_many(:config_changes) }
   end
 
   describe "validations" do
@@ -30,6 +31,11 @@ RSpec.describe Robot, type: :model do
   end
 
   describe "config" do
+    it "generates a new config change every time it changes" do
+      expect { subject.update_attributes(config: 'new: config') }
+        .to change { RobotConfigChange.count }.by(1)
+    end
+
     context "on engine change, if config invalid under new engine" do
       before do
         subject
