@@ -16,8 +16,12 @@ class RobotContextService
 
   private
 
+  def robot_context
+    @robot_context ||= robot.context
+  end
+
   def config
-    @config ||= robot.context_config
+    @config = robot_context.decoded_config
   end
 
   def load_conversions(_config)

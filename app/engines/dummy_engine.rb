@@ -1,13 +1,6 @@
 class DummyEngine < BaseEngine
-
   attr_reader :config
 
-  def unpack_config(_config)
-    @config = _config
+  def perform_with_configuration(_config)
   end
-
-  def perform
-
-  end
-
 end

@@ -1,0 +1,62 @@
+(function() {
+  'use strict';
+
+  angular
+    .module('ActiveAdmin')
+    .directive('codemirrorEditor', Directive);
+
+  Directive.$inject = ['$require', '$timeout'];
+
+  var ASSETS = ["<%= asset_path('codemirror.js') %>", "<%= asset_path('codemirror.css') %>"];
+
+  function Directive($require, $timeout) {
+    return {
+      template: ('\
+        <div class="codemirror-editor" style="position: relative; width: 100%;">\
+          <div class="codemirror-editor-code" style="position: absolute; width: 100%;"></div>\
+          <div class="codemirror-editor-height"></div>\
+        </div>\
+      '),
+      restrict: 'EA',
+      require: 'ngModel',
+      scope: {
+        mode: '@',
+        theme: '@',
+        lineNumbers: '@'
+      },
+      link: function(_scope, _el, _attrs, _ngModel) {
+        $require(ASSETS).then(function() {
+          var codeDiv = _el.find('.codemirror-editor-code')[0],
+              heightDiv = _el.find('.codemirror-editor-height')[0],
+              editor = new CodeMirror(codeDiv, {
+                value: _ngModel.$viewValue || "",
+                theme: _scope.theme || 'twilight',
+                mode: _scope.mode || 'text',
+                lineNumbers: _scope.lineNumbers != 'no',
+                textWrapping: false
+              });
+
+          _ngModel.$render = function() {
+            editor.setValue(_ngModel.$viewValue);
+          }
+
+          _scope.$watch('mode', function(_value) {
+            editor.setOption('mode', _value);
+          });
+
+          _scope.$watch(function() {
+            return codeDiv.offsetHeight;
+          }, function(_value) {
+            heightDiv.style = 'height:' + _value + 'px;';
+          })
+
+          editor.on("change", function() {
+            $timeout(function() {
+              _ngModel.$setViewValue(editor.getValue());
+            });
+          });
+        });
+      }
+    };
+  }
+})();

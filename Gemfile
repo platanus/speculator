@@ -24,9 +24,10 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'simple_token_authentication', '~> 1.0'
 gem 'rack-cors', '~> 0.4'
 gem 'enumerize', '~> 1.1'
-gem 'trade-o-matic', '~> 0.3' # path: '../trade-o-matic'
+gem 'trade-o-matic', '~> 0.5' # path: '../trade-o-matic'
 gem 'delayed_job_active_record'
 gem 'attr_encrypted', "~> 2.0.0"
+gem 'cleanroom'
 
 group :production, :staging do
   gem 'rails_stdout_logging'
