@@ -4,15 +4,23 @@ class CustomEngine < BaseEngine
   end
 
   include Cleanroom
+  include CustomExtensions::Account
+
+  def info(_msg)
+    logger.info(_msg)
+  end
 
   # Exposed engine methods
   expose :get_account
   expose :get_accounts
   expose :logger
+  expose :info
   expose :log_exception
   expose :stat
   expose :alert
   expose :end_alert
+  expose :replace_bids_in
+  expose :replace_asks_in
 
   private
 
