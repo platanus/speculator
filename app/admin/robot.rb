@@ -17,7 +17,7 @@ ActiveAdmin.register Robot do
     f.semantic_errors
     f.inputs "Details" do
       input :name
-      input :engine, as: :select, collection: [ 'dummy', 'ask_replicator' ]
+      input :engine, as: :select, collection: [ 'dummy', 'ask_replicator', 'custom' ]
       input :delay
       input :config, as: :code, input_html: { mode: robot.engine_config_lang }
     end

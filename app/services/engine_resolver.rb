@@ -12,6 +12,8 @@ class EngineResolver
       DummyEngine
     when :ask_replicator
       AskReplicatorEngine
+    when :custom
+      CustomEngine
     else
       nil
     end
