@@ -6,7 +6,7 @@ class Robot < ActiveRecord::Base
   has_many :config_changes, class_name: 'RobotConfigChange', inverse_of: :robot
 
   before_validation :reset_engine_configuration, if: :engine_changed?
-  before_save :save_config_history, if: :config_changed?
+  after_save :save_config_history, if: :config_changed?
   validates :name, :engine, :delay, presence: true
   validate :engine_exists
   validate :engine_accepts_configuration
