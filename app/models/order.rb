@@ -5,7 +5,7 @@ class Order < ActiveRecord::Base
 
   belongs_to :account
 
-  validates :ex_id, :instruction, :volume, :price, :base_currency, :quote_currency, presence: true
+  validates :ex_id, :instruction, :volume, :base_currency, :quote_currency, presence: true
 
   before_create :load_defaults
 

@@ -79,12 +79,12 @@ class SyncOrder
   def bind_to_core
     order.ex_id = core_order.id
     order.instruction = core_order.instruction
-    order.base_currency = core_order.volume.currency.code
+    order.base_currency = core_order.pair.base.code
+    order.quote_currency = core_order.pair.quote.code
     order.volume = core_order.volume.amount
-    order.quote_currency = core_order.price.currency.code
-    order.price = core_order.price.amount
+    order.price = core_order.limit? ? core_order.price.amount : nil
     order.pending_volume = core_order.pending_volume.amount
-    order.unsynced_volume = 0.0
+    order.unsynced_volume = (core_order.volume - core_order.pending_volume).amount
     sync_status
   end
 
