@@ -113,7 +113,7 @@ class OrderPool
         volume_limit = _limit / order.price.amount
         order.volume = order.volume.currency.pack([volume_limit, order.volume.amount].min)
         next unless order_valid? order
-        _limit -= order.volume * order.price.amount
+        _limit -= order.volume.amount * order.price.amount
       end
 
       create_order order
