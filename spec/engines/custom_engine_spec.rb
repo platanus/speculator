@@ -11,6 +11,10 @@ describe CustomEngine do
 
   pending "valid_configuration?"
 
+  describe "delay" do
+    it { expect(engine.delay).to eq robot.delay }
+  end
+
   describe "tick" do
     it "should execute the given engine code using the provided DSL" do
       expect(engine).to receive(:get_account).with('foo').and_return(nil)

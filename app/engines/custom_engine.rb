@@ -10,6 +10,10 @@ class CustomEngine < BaseEngine
     logger.info(_msg)
   end
 
+  def delay
+    robot.delay
+  end
+
   # Exposed engine methods
   expose :get_account
   expose :get_accounts
@@ -21,6 +25,7 @@ class CustomEngine < BaseEngine
   expose :end_alert
   expose :replace_bids_in
   expose :replace_asks_in
+  expose :delay
 
   private
 
