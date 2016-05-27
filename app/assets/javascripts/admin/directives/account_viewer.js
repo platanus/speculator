@@ -38,7 +38,7 @@
               asks = _chart.addSeries({ color: 'red', name: 'Ask' }, false);
 
           function updateSeries() {
-            if(_scope.account == null) return;
+            if(_scope.account === null) return;
 
             // _scope.account.$fetch();
             _scope.orders.$refresh().$then(function(_orders) {
@@ -57,21 +57,17 @@
               enabled: false
             },
             chart: {
-              type: 'column',
+              type: 'area',
               panning: false,
               style: {
                 fontFamily: '"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif'
               }
             },
             plotOptions: {
-              column: {
-                grouping: false,
-                pointPadding: 0.1,
-                groupPadding: 0.0
-              },
               series: {
+                step: true,
                 marker: {
-                  enabled: true
+                  enabled: false
                 }
               }
             },
