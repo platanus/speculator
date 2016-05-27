@@ -29,7 +29,7 @@
         }
 
         function setupStats(_robot) {
-          stats = _robot.stats.$collection({ per_page: 20000, order: 'created_at_asc' });
+          stats = _robot.stats.$collection({ last: 2000, order: 'created_at_asc' });
           stats.$on('after-fetch-many', reloadStats);
         }
 
@@ -91,6 +91,9 @@
           return {
             credits: {
               enabled: false
+            },
+            legend: {
+              enabled: true
             },
             plotOptions: {
               series: {
