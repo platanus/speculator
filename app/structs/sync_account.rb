@@ -24,18 +24,18 @@ class SyncAccount
     @pair ||= Trader::CurrencyPair.for_code(account.base_currency.to_sym, account.quote_currency.to_sym)
   end
 
-  def unsynced_volume
-    vol = account.orders.unsynced.map do |order|
+  def unsynced_volume(_instruction)
+    vol = account.orders.with_instruction(_instruction).unsynced.map do |order|
       decorate(order).unsynced_volume
     end.inject(pair.base.pack(0.0), :+)
 
     pair.base.pack vol
   end
 
-  def sync_volume(_volume)
+  def sync_volume(_instruction, _volume)
     _volume = pair.base.pack(_volume)
 
-    account.orders.unsynced.order('id ASC').each do |order|
+    account.orders.with_instruction(_instruction).unsynced.order('id ASC').each do |order|
       break if _volume <= 0.0
       _volume = decorate(order).sync_volume _volume
     end
@@ -64,6 +64,22 @@ class SyncAccount
     orders(open: true).each &:refresh!
   end
 
+  def unsynced_bid_volume
+    unsynced_volume(Trader::Order::BID)
+  end
+
+  def unsynced_ask_volume
+    unsynced_volume(Trader::Order::ASK)
+  end
+
+  def sync_bid_volume(_volume)
+    sync_volume(Trader::Order::BID, _volume)
+  end
+
+  def sync_ask_volume(_volume)
+    sync_volume(Trader::Order::ASK, _volume)
+  end
+
   private
 
   def load_core_account
@@ -81,5 +97,24 @@ class SyncAccount
     order = SyncOrder.new _order
     order.account = self # set inverse
     order
+  end
+
+  def unsynced_volume(_instruction)
+    vol = account.orders.with_instruction(_instruction).unsynced.map do |order|
+      decorate(order).unsynced_volume
+    end.inject(pair.base.pack(0.0), :+)
+
+    pair.base.pack vol
+  end
+
+  def sync_volume(_instruction, _volume)
+    _volume = pair.base.pack(_volume)
+
+    account.orders.with_instruction(_instruction).unsynced.order('id ASC').each do |order|
+      break if _volume <= 0.0
+      _volume = decorate(order).sync_volume _volume
+    end
+
+    pair.base.pack(_volume)
   end
 end

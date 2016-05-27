@@ -53,13 +53,15 @@ RSpec.describe SyncAccount do
       end
 
       describe "unsynced_volume" do
-        it { expect(subject.unsynced_volume).to eq(2.5) }
+        it { expect(subject.unsynced_bid_volume).to eq(2.5) }
+        it { expect(subject.unsynced_ask_volume).to eq(0.0) }
       end
 
       describe "sync_volume" do
-        it { expect(subject.sync_volume(2.5)).to eq(0.0) }
-        it { expect(subject.sync_volume(3.5)).to eq(1.0) }
-        it { expect { subject.sync_volume(2.5) }.to change { account.orders.unsynced.count }.by(-2) }
+        it { expect(subject.sync_ask_volume(100.0)).to eq(100.0) }
+        it { expect(subject.sync_bid_volume(2.5)).to eq(0.0) }
+        it { expect(subject.sync_bid_volume(3.5)).to eq(1.0) }
+        it { expect { subject.sync_bid_volume(2.5) }.to change { account.orders.unsynced.count }.by(-2) }
       end
     end
   end
