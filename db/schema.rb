@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512204132) do
+ActiveRecord::Schema.define(version: 20160601211543) do
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "robot_id",                 limit: 4
@@ -149,6 +149,16 @@ ActiveRecord::Schema.define(version: 20160512204132) do
     t.text     "context_config",    limit: 65535
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.integer  "account_id",  limit: 4
+    t.datetime "timestamp"
+    t.float    "price",       limit: 24
+    t.float    "volume",      limit: 24
+    t.integer  "instruction", limit: 4
+  end
+
+  add_index "transactions", ["account_id"], name: "index_transactions_on_account_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
     t.string   "encrypted_password",     limit: 255, default: "", null: false
@@ -171,4 +181,5 @@ ActiveRecord::Schema.define(version: 20160512204132) do
   add_foreign_key "robot_config_changes", "robots"
   add_foreign_key "robot_logs", "robots"
   add_foreign_key "robot_stats", "robots"
+  add_foreign_key "transactions", "accounts"
 end
