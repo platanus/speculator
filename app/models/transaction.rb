@@ -21,7 +21,8 @@ end
 #
 # Indexes
 #
-#  index_transactions_on_account_id  (account_id)
+#  index_transactions_on_account_id                (account_id)
+#  index_transactions_on_account_id_and_timestamp  (account_id,timestamp)
 #
 # Foreign Keys
 #

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601211543) do
+ActiveRecord::Schema.define(version: 20160601220506) do
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "robot_id",                 limit: 4
@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(version: 20160601211543) do
     t.integer  "instruction", limit: 4
   end
 
+  add_index "transactions", ["account_id", "timestamp"], name: "index_transactions_on_account_id_and_timestamp", using: :btree
   add_index "transactions", ["account_id"], name: "index_transactions_on_account_id", using: :btree
 
   create_table "users", force: :cascade do |t|
