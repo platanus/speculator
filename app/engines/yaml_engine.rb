@@ -1,4 +1,6 @@
 class YamlEngine < BaseEngine
+  attr_reader :params
+
   def self.config_lang
     'yaml'
   end
@@ -22,11 +24,12 @@ class YamlEngine < BaseEngine
   end
 
   def perform_with_configuration(_config)
-    perform_with_hash(_config.merge fixed_config)
+    @params = _config.merge fixed_config
+    perform
   end
 
-  def perform_with_hash(_config)
-    raise NotImplementedError, '`perform_with_hash` method not implemented'
+  def perform
+    raise NotImplementedError, '`perform` method not implemented'
   end
 
   def fixed_config
