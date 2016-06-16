@@ -5,6 +5,7 @@ class CustomEngine < BaseEngine
 
   include Cleanroom
   include CustomExtensions::Account
+  include CustomExtensions::Money
 
   def info(_msg)
     logger.info(_msg)
@@ -23,8 +24,6 @@ class CustomEngine < BaseEngine
   expose :stat
   expose :alert
   expose :end_alert
-  expose :replace_bids_in
-  expose :replace_asks_in
   expose :delay
 
   private

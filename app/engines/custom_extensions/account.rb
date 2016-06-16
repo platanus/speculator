@@ -10,6 +10,11 @@ module CustomExtensions
       OrderPool.new(_account, Trader::Order::ASK, _options.merge(logger: logger)).sync order_pairs
     end
 
+    def self.included(_class)
+      _class.expose :replace_bids_in
+      _class.expose :replace_asks_in
+    end
+
     private
 
     def build_orders(_raw_orders, _pair, _instruction)
