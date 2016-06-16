@@ -1,9 +1,5 @@
 class OrderPool
-  DEF_PRICE_THR = 0.01
-  DEF_VOLUME_THR = 0.01
-  MIN_ORDER_VOLUME = 0.01
-
-  attr_reader :account, :instruction, :orders, :price_thr, :volume_thr, :min_order_volume, :logger
+  attr_reader :account, :instruction, :orders, :price_thr, :min_volume, :logger
 
   def initialize(_account, _instruction, _options={})
     raise ArgumentError, "invalid instruction #{_instruction}" unless [:bid, :ask].include? _instruction
@@ -12,10 +8,7 @@ class OrderPool
     @instruction = _instruction
     @orders = []
 
-    @price_thr = _options.fetch(:price_thr, DEF_PRICE_THR)
-    @volume_thr = _options.fetch(:volume_thr, DEF_VOLUME_THR)
-    @min_order_volume = _options.fetch(:min_order_volume, account.pair.base.pack(MIN_ORDER_VOLUME))
-    @logger = _options.fetch(:logger, Rails.logger)
+    parse_options _options
   end
 
   def refresh_orders
@@ -37,6 +30,15 @@ class OrderPool
   end
 
   private
+
+  def parse_options(_options)
+    @price_thr = 0
+    @volume_thr = 0
+
+    @price_thr = pair.quote.unpack(_options[:price_thr]) if _options.key? :price_thr
+    @min_volume = pair.base.unpack(_options[:min_volume]) if _options.key? :min_volume
+    @logger = _options.fetch(:logger, Rails.logger)
+  end
 
   def pair
     account.pair
@@ -62,7 +64,7 @@ class OrderPool
           if order.volume > non_matched_volume
             new_order_volume = order.volume - non_matched_volume
             non_matched_volume = non_matched_volume.currency.pack 0.0
-            next r if new_order_volume / order.volume < volume_thr
+            next r if new_order_volume < min_volume
             order.volume = new_order_volume
           else
             non_matched_volume -= order.volume
@@ -73,7 +75,7 @@ class OrderPool
         r << order
       end
 
-      if non_matched_volume / current_order.pending_volume > volume_thr
+      if non_matched_volume > min_volume
         logger.info "Order Pool - Canceling order #{current_order.ex_id}"
         current_order.cancel!
       else
@@ -95,7 +97,6 @@ class OrderPool
 
   def order_matches?(_order, _current_order)
     variation = _order.price.amount - _current_order.price.amount
-    variation = variation / _current_order.price.amount
     variation.abs < price_thr
   end
 
@@ -126,7 +127,7 @@ class OrderPool
   end
 
   def order_valid?(_order)
-    if _order.volume < min_order_volume
+    if _order.volume < min_volume
       logger.info "Order Pool - Invalid order: #{_order.volume}"
       false
     else
