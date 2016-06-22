@@ -22,5 +22,9 @@ class RobotLoggerService
 
   private
 
+  def notify_error(_message)
+    NotifyRobot.for robot: robot, say: "error detected! #{_message}"
+  end
+
   attr_reader :robot
 end

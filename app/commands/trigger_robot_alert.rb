@@ -6,6 +6,7 @@ class TriggerRobotAlert < Command.new(:robot, :title, :message)
     else
       update_alert
       trigger_alert
+      notify_alert
     end
   end
 
@@ -31,6 +32,10 @@ class TriggerRobotAlert < Command.new(:robot, :title, :message)
 
   def trigger_alert
     alert.triggered_at = current_time
+  end
+
+  def notify_alert
+    NotifyRobot.for robot: robot, say: "alert triggered! #{title}"
   end
 
   def current_time
