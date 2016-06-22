@@ -1,5 +1,5 @@
 ActiveAdmin.register Robot do
-  permit_params :name, :engine, :delay, :config
+  permit_params :name, :engine, :delay, :config, :slack_token, :slack_channel
 
   filter :name
   filter :engine,  as: :check_boxes, collection: [ 'dummy', 'ask_replicator' ]
