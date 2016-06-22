@@ -102,4 +102,6 @@ end
 #  started_at        :datetime
 #  next_execution_at :datetime
 #  context_config    :text(65535)
+#  slack_token       :string(255)
+#  slack_channel     :string(255)
 #

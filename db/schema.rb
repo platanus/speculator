@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512204132) do
+ActiveRecord::Schema.define(version: 20160622203957) do
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "robot_id",                 limit: 4
@@ -147,6 +147,8 @@ ActiveRecord::Schema.define(version: 20160512204132) do
     t.datetime "started_at"
     t.datetime "next_execution_at"
     t.text     "context_config",    limit: 65535
+    t.string   "slack_token",       limit: 255
+    t.string   "slack_channel",     limit: 255
   end
 
   create_table "users", force: :cascade do |t|

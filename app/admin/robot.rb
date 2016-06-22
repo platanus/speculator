@@ -20,6 +20,8 @@ ActiveAdmin.register Robot do
       input :engine, as: :select, collection: [ 'dummy', 'ask_replicator', 'custom' ]
       input :delay
       input :config, as: :code, input_html: { mode: robot.engine_config_lang }
+      input :slack_token
+      input :slack_channel
     end
     f.actions
   end
